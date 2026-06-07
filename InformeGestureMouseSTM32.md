@@ -1,16 +1,16 @@
 # GestureMouse STM32
 
-## Informe completo del proyecto
+## Informe
 
-GestureMouse STM32 es un sistema embebido portatil tipo guante/controlador gestual, disenado para detectar movimientos de la mano y de un dedo mediante sensores IMU. El sistema utiliza un microcontrolador STM32F030 para leer las IMU por SPI y procesar la informacion de movimiento como base para generar acciones tipo mouse, como movimiento de cursor, clic, scroll o arrastre.
+GestureMouse STM32 es un sistema embebido portátil tipo guante/controlador gestual, diseñado para detectar movimientos de la mano y de un dedo mediante sensores IMU. El sistema utiliza un microcontrolador STM32F030 para leer las IMU por SPI y procesar la información de movimiento como base para generar acciones tipo mouse, como movimiento de cursor, clic, scroll o arrastre.
 
-La primera etapa del proyecto se enfoca en validar la base electronica: entrada de alimentacion por USB-C, carga de bateria LiPo, regulacion a 3.3 V, programacion por SWD y comunicacion con sensores IMU.
+La primera etapa del proyecto se enfoca en validar la base electrónica: entrada de alimentación por USB-C, carga de batería LiPo, regulación a 3.3 V, programación por SWD y comunicación con sensores IMU.
 
 ---
 
 ## Tabla de contenido
 
-- [Contextualizacion](#contextualizacion)
+- [Contextualización](#contextualizacion)
 - [Objetivos](#objetivos)
 - [Evolucion del proyecto](#evolucion-del-proyecto)
 - [Prueba de concepto](#prueba-de-concepto)
@@ -30,9 +30,9 @@ La primera etapa del proyecto se enfoca en validar la base electronica: entrada 
 
 ## Contextualizacion
 
-Las interfaces tradicionales como el mouse y el teclado requieren contacto fisico directo. Esto puede limitar algunas formas de interaccion, especialmente en aplicaciones de accesibilidad, control remoto, presentaciones, realidad virtual o sistemas roboticos.
+Las interfaces tradicionales como el mouse y el teclado requieren contacto físico directo. Esto puede limitar algunas formas de interaccion, especialmente en aplicaciones de accesibilidad, control remoto, presentaciones, realidad virtual o sistemas roboticos.
 
-El proyecto propone un guante controlador gestual que interpreta movimientos naturales de la mano y del dedo para convertirlos en acciones tipo mouse. La solucion busca ser portatil, alimentada por bateria y ampliable a comunicacion inalambrica BLE HID en una version futura.
+El proyecto propone un guante controlador gestual que interpreta movimientos naturales de la mano y del dedo para convertirlos en acciones tipo mouse. La solucion busca ser portatil, alimentada por bateria y con comunicacion inalambrica BLE HID.
 
 ---
 
@@ -40,7 +40,7 @@ El proyecto propone un guante controlador gestual que interpreta movimientos nat
 
 ### Objetivo general
 
-Disenar un sistema embebido portatil capaz de detectar movimientos de mano y dedo mediante IMU para controlar acciones tipo mouse.
+Diseñar un sistema embebido portatil capaz de detectar movimientos de mano y dedo mediante IMU para controlar acciones tipo mouse.
 
 ### Objetivos de esta etapa
 
