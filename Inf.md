@@ -1,153 +1,100 @@
-# GestureMouse STM32
 
-## Informe
-
-GestureMouse STM32 es un sistema embebido portatil tipo guante/controlador gestual, disenado para detectar movimientos de la mano y de un dedo mediante sensores IMU. El sistema utiliza un microcontrolador STM32F030 para leer las IMU por SPI y procesar la informacion de movimiento como base para generar acciones tipo mouse, como movimiento de cursor, clic, scroll o arrastre.
-
-La primera etapa del proyecto se enfoca en validar la base electronica: entrada de alimentacion por USB-C, carga de bateria LiPo, regulacion a 3.3 V, programacion por SWD y comunicacion con sensores IMU.
-
----
-
-## Tabla de contenido
-
-* [Contextualizacion](#contextualizacion)
-* [Objetivos](#objetivos)
-* [Evolucion del proyecto](#evolucion-del-proyecto)
-* [Prueba de concepto](#prueba-de-concepto)
-* [Arquitectura general](#arquitectura-general)
-* [Diagramas del sistema](#diagramas-del-sistema)
-* [Diseno electronico](#diseno-electronico)
-* [Arbol de potencia](#arbol-de-potencia)
-* [Diseno de PCB](#diseno-de-pcb)
-* [Firmware propuesto](#firmware-propuesto)
-* [Validacion esperada](#validacion-esperada)
-* [Alcance y aplicaciones](#alcance-y-aplicaciones)
-* [Limitaciones](#limitaciones)
-* [Trabajo futuro](#trabajo-futuro)
-* [Referencias](#referencias)
+- [Evolucion del proyecto](#evolucion-del-proyecto)
+- [Prueba de concepto](#prueba-de-concepto)
+- [Arquitectura general](#arquitectura-general)
+- [Principio de funcionamiento de la IMU](#principio-de-funcionamiento-de-la-imu)
+- [Decision STM32 vs ESP32-C6](#decision-stm32-vs-esp32-c6)
+- [Diagramas del sistema](#diagramas-del-sistema)
+- [Diseno electronico](#diseno-electronico)
+- [Arbol de potencia](#arbol-de-potencia)
+- [Alcance y aplicaciones](#alcance-y-aplicaciones)
+- [Limitaciones](#limitaciones)
+- [Trabajo futuro](#trabajo-futuro)
+- [Capturas sugeridas de datasheets](#capturas-sugeridas-de-datasheets)
+- [Referencias](#referencias)
 
 ---
+   - Se simplifico el sistema a una IMU de mano y una IMU externa de dedo.
+   - Se dejo el ESP32-C6 como posible modulo futuro para BLE HID.
 
-## Contextualizacion
-
-Las interfaces tradicionales como el mouse y el teclado requieren contacto fisico directo. Esto puede limitar algunas formas de interaccion, especialmente en aplicaciones de accesibilidad, control remoto, presentaciones, realidad virtual o sistemas roboticos.
-
-El proyecto propone un guante controlador gestual que interpreta movimientos naturales de la mano y del dedo para convertirlos en acciones tipo mouse. La solucion busca ser portatil, alimentada por bateria y con comunicacion inalambrica BLE HID.
-
----
-
-## Objetivos
-
-### Objetivo general
-
-Disenar un sistema embebido portatil capaz de detectar movimientos de mano y dedo mediante IMU para controlar acciones tipo mouse.
-
-### Objetivos de esta etapa
-
-* Disenar una PCB principal para el sistema GestureMouse STM32.
-* Implementar entrada de alimentacion por USB-C.
-* Integrar carga de bateria LiPo.
-* Regular el sistema a 3.3 V.
-* Programar el STM32 mediante SWD.
-* Leer sensores IMU mediante SPI.
-* Separar fisicamente la IMU del dedo en una PCB secundaria.
-* Implementar comunicacion UART y BLE con ESP32-C6.
-
----
-
-## Evolucion del proyecto
-
-El proyecto evoluciono en tres etapas principales:
-
-1. **Nota de aplicacion inicial**
-
-   * Se planteo un guante gestual inalambrico.
-   * Se considero inicialmente usar ESP32-C6 como microcontrolador principal.
-   * Se propuso comunicacion BLE HID.
-   * Se penso en multiples IMU y comunicacion I2C.
-
-2. **Prueba de concepto con SensorTile**
-
-   * Se uso el kit STEVAL-STLKT01V1.
-   * Se programo con una Nucleo-L476RG usada como ST-LINK externo.
-   * Se cargo el firmware FP-SNS-ALLMEMS1.
-   * Se visualizaron datos reales en la aplicacion ST BLE Sensor.
-
-3. **Diseno de PCB personalizada**
-
-   * Se selecciono STM32F030C8T6 como microcontrolador principal.
-   * Se cambio a comunicacion SPI para las IMU.
-   * Se simplifico el sistema a una IMU de mano y una IMU externa de dedo.
-   * Se dejo el ESP32-C6 como modulo para BLE HID.
+Esta evolucion fue importante porque el proyecto paso de una idea inicial centrada en comunicacion inalambrica a una etapa mas realista de validacion de hardware. En la version actual, el STM32 se encarga del control local y lectura de sensores, mientras que el ESP32-C6 queda reservado para una etapa posterior de comunicacion BLE HID.
 
 ---
 
 ## Prueba de concepto
 
-Antes del diseno de la PCB personalizada se desarrollo una prueba de concepto usando el kit **STEVAL-STLKT01V1 SensorTile** de STMicroelectronics.
+---
 
-### Hardware usado
+## Principio de funcionamiento de la IMU
 
-* SensorTile STEVAL-STLKT01V1.
-* Cradle o base del SensorTile.
-* STM32 Nucleo-L476RG usada como programador ST-LINK externo.
-* Cable SWD.
-* Cable USB.
-* Aplicacion movil ST BLE Sensor.
+Una IMU, o unidad de medicion inercial, integra sensores MEMS capaces de medir movimiento en varios ejes. En este proyecto se usa la **LSM6DS3TR-C**, que combina:
 
-### Firmware usado
+- Acelerometro de 3 ejes.
+- Giroscopio de 3 ejes.
 
-Se utilizo el paquete oficial:
+El acelerometro mide aceleracion lineal sobre los ejes `X`, `Y` y `Z`. Cuando el dispositivo esta quieto, tambien permite observar la orientacion relativa respecto a la gravedad. Por eso puede usarse para detectar inclinacion de la mano o del dedo.
+
+El giroscopio mide velocidad angular sobre los ejes `X`, `Y` y `Z`. Esto permite detectar rotaciones, cambios rapidos de orientacion y movimientos dinamicos. En un guante gestual, esta informacion es util para diferenciar movimientos suaves, giros, inclinaciones y gestos rapidos.
+
+En el sistema GestureMouse STM32, la IMU entrega datos digitales al microcontrolador mediante SPI:
 
 ```text
-FP-SNS-ALLMEMS1
-Projects
-STM32L476JG-SensorTile
-Applications
-ALLMEMS1
-STM32CubeIDE
+Movimiento fisico
+      |
+      v
+Acelerometro + giroscopio
+      |
+      v
+Datos digitales por SPI
+      |
+      v
+STM32F030
+      |
+      v
+Filtrado e interpretacion de gestos
 ```
 
-Este firmware permite leer sensores del SensorTile y transmitir informacion por Bluetooth Low Energy hacia la aplicacion movil ST BLE Sensor.
+La IMU de la mano se usa para detectar movimiento global, inclinacion y orientacion principal. La IMU del dedo se usa para detectar acciones especificas asociadas a gestos, como clic, seleccion o confirmacion.
 
-### Validaciones logradas
-
-* Programacion del SensorTile por SWD.
-* Compilacion y carga del firmware ALLMEMS1.
-* Visualizacion de datos reales de acelerometro, giroscopio y temperatura.
-* Transmision BLE hacia el celular.
-* Confirmacion de que la lectura de sensores y la comunicacion inalambrica eran viables para el proyecto.
-
-### Limitacion detectada
-
-Durante las pruebas se observo dependencia de la Nucleo o del cable SWD para alimentacion o referencia de voltaje. Esto permitio identificar la necesidad de una alimentacion independiente y estable en el diseno final.
+El firmware debe leer periodicamente los registros de aceleracion y giro, aplicar algun filtrado basico para reducir ruido y luego comparar los valores contra umbrales o estados para identificar gestos.
 
 ---
 
-## Arquitectura general
+## Decision STM32 vs ESP32-C6
 
-La arquitectura actual del sistema se resume asi:
+En la nota de aplicacion inicial se considero usar un ESP32-C6 como microcontrolador principal, principalmente porque integra Bluetooth Low Energy y podria funcionar directamente como dispositivo HID. Sin embargo, para la version actual se decidio usar un **STM32F030C8T6** como microcontrolador principal.
+
+La decision se baso en el alcance real de esta etapa del proyecto. Antes de implementar un mouse BLE completo, era necesario validar la base electronica: alimentacion, regulacion, programacion, comunicacion SPI y lectura de sensores. Para ese objetivo, el STM32 es una opcion adecuada porque permite trabajar de forma ordenada con CubeMX, SWD, SPI, UART y una arquitectura de firmware embebido mas controlada.
+
+Comparacion de enfoque:
 
 ```text
-Movimiento de mano/dedo
-        |
-        v
-IMU LSM6DS3TR-C
-        |
-        v
-SPI
-        |
-        v
-STM32F030C8T6
-        |
-        v
-Procesamiento local de gestos
-        |
-        v
-UART debug / ESP32-C6 futuro
-        |
-        v
-Computador
+STM32F030:
+- Control principal del hardware.
+- Lectura de IMU por SPI.
+- Programacion y depuracion por SWD.
+- Bajo consumo frente a un modulo inalambrico activo.
+- Adecuado para validar PCB y sensores.
+
+ESP32-C6:
+- Integra Bluetooth Low Energy.
+- Util para BLE HID en una etapa futura.
+- Mayor consumo, especialmente con radio activa.
+- Mas conveniente como modulo de comunicacion que como centro del prototipo actual.
 ```
 
-El objetivo inicial no es implementar completamente el mouse inalambrico, sino validar el hardware necesario para leer las IMU correctamente y procesar datos de movimiento.
+Por esta razon, la arquitectura final separa responsabilidades:
+
+```text
+IMU -> STM32F030 -> UART -> ESP32-C6 futuro -> BLE HID -> Computador
+```
+
+Esta separacion permite que la PCB actual se enfoque en la adquisicion y procesamiento local de movimiento, dejando la comunicacion Bluetooth como una mejora posterior sin comprometer la validacion inicial del hardware.
+
+---
+
+## Diagramas del sistema
+
+### Diagrama de bloques de hardware
+
+---
