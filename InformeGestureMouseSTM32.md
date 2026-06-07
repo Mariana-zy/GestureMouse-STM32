@@ -10,17 +10,17 @@ La primera etapa del proyecto se enfoca en validar la base electrónica: entrada
 
 ## Tabla de contenido
 
-- [Contextualización](#contextualizacion)
+- [Contextualización](#contextualización)
 - [Objetivos](#objetivos)
-- [Evolucion del proyecto](#evolucion-del-proyecto)
+- [Evolución del proyecto](#evolución-del-proyecto)
 - [Prueba de concepto](#prueba-de-concepto)
 - [Arquitectura general](#arquitectura-general)
 - [Diagramas del sistema](#diagramas-del-sistema)
-- [Diseno electronico](#diseno-electronico)
-- [Arbol de potencia](#arbol-de-potencia)
-- [Diseno de PCB](#diseno-de-pcb)
+- [Diseño electrónico](#diseño-electrónico)
+- [Árbol de potencia](#árbol-de-potencia)
+- [Diseño de PCB](#diseño-de-pcb)
 - [Firmware propuesto](#firmware-propuesto)
-- [Validacion esperada](#validacion-esperada)
+- [Validación esperada](#validación-esperada)
 - [Alcance y aplicaciones](#alcance-y-aplicaciones)
 - [Limitaciones](#limitaciones)
 - [Trabajo futuro](#trabajo-futuro)
@@ -28,7 +28,7 @@ La primera etapa del proyecto se enfoca en validar la base electrónica: entrada
 
 ---
 
-## Contextualizacion
+## Contextualización
 
 Las interfaces tradicionales como el mouse y el teclado requieren contacto físico directo. Esto puede limitar algunas formas de interaccion, especialmente en aplicaciones de accesibilidad, control remoto, presentaciones, realidad virtual o sistemas roboticos.
 
@@ -40,42 +40,42 @@ El proyecto propone un guante controlador gestual que interpreta movimientos nat
 
 ### Objetivo general
 
-Diseñar un sistema embebido portatil capaz de detectar movimientos de mano y dedo mediante IMU para controlar acciones tipo mouse.
+Diseñar un sistema embebido portátil capaz de detectar movimientos de mano y dedo mediante IMU para controlar acciones tipo mouse.
 
 ### Objetivos de esta etapa
 
-- Disenar una PCB principal para el sistema GestureMouse STM32.
-- Implementar entrada de alimentacion por USB-C.
+- Diseñar una PCB principal para el sistema GestureMouse STM32.
+- Implementar entrada de alimentación por USB-C.
 - Integrar carga de bateria LiPo.
 - Regular el sistema a 3.3 V.
 - Programar el STM32 mediante SWD.
 - Leer sensores IMU mediante SPI.
-- Separar fisicamente la IMU del dedo en una PCB secundaria.
-- Dejar prevista comunicacion UART para una futura etapa BLE con ESP32-C6.
+- Separar físicamente la IMU del dedo en una PCB secundaria.
+- Implementar comunicación UART y BLE con ESP32-C6.
 
 ---
 
-## Evolucion del proyecto
+## Evolución del proyecto
 
-El proyecto evoluciono en tres etapas principales:
+El proyecto evolucionó en tres etapas principales:
 
-1. **Nota de aplicacion inicial**
-   - Se planteo un guante gestual inalambrico.
-   - Se considero inicialmente usar ESP32-C6 como microcontrolador principal.
-   - Se propuso comunicacion BLE HID.
-   - Se penso en multiples IMU y comunicacion I2C.
+1. **Nota de aplicación inicial**
+   - Se planteó un guante gestual inalámbrico.
+   - Se consideró inicialmente usar ESP32-C6 como microcontrolador principal.
+   - Se propuso comunicación BLE HID.
+   - Se pensó en múltiples IMU y comunicacion I2C.
 
 2. **Prueba de concepto con SensorTile**
-   - Se uso el kit STEVAL-STLKT01V1.
-   - Se programo con una Nucleo-L476RG usada como ST-LINK externo.
-   - Se cargo el firmware FP-SNS-ALLMEMS1.
-   - Se visualizaron datos reales en la aplicacion ST BLE Sensor.
+   - Se usó el kit STEVAL-STLKT01V1.
+   - Se programó con una Núcleo-L476RG usada como ST-LINK externo.
+   - Se cargó el firmware FP-SNS-ALLMEMS1.
+   - Se visualizaron datos reales en la aplicación ST BLE Sensor.
 
 3. **Diseno de PCB personalizada**
-   - Se selecciono STM32F030C8T6 como microcontrolador principal.
-   - Se cambio a comunicacion SPI para las IMU.
-   - Se simplifico el sistema a una IMU de mano y una IMU externa de dedo.
-   - Se dejo el ESP32-C6 como posible modulo futuro para BLE HID.
+   - Se seleccionó STM32F030C8T6 como microcontrolador principal.
+   - Se cambió a comunicación SPI para las IMU.
+   - Se simplificó el sistema a una IMU de mano y una IMU externa de dedo.
+   - Se dejó el ESP32-C6 como módulo para BLE HID.
 
 ---
 
