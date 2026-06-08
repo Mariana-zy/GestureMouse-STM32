@@ -1,4 +1,4 @@
-# Enlaces Del Proyecto
+# Enlaces de la Nota de Aplicaciones
 
 En esta sección se incluyen enlaces externos relacionados con el desarrollo de GestureMouse.
 
