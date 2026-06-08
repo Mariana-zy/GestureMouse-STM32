@@ -1,6 +1,6 @@
-# Enlaces del Prototipo
+# Enlaces de la Prueba de Concepto
 
-En esta sección se incluyen enlaces externos y repositorios relacionados con el desarrollo de GestureMouse STM32.
+En esta sección se incluyen enlaces externos y repositorios relacionados con el desarrollo de la Prueba de Concepto del GestureMouse STM32.
 
 
 ## Datasheet STEVAL-STLKT01V1 SensorTile Kit:
