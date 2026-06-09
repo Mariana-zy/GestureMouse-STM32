@@ -547,17 +547,21 @@ docs/
 
 ## Referencias
 
-
-- STMicroelectronics. (s. f.). *STEVAL-STLKT01V1: SensorTile connectable sensor node: Sensor and connectivity development kit*. STMicroelectronics. https://www.st.com/en/evaluation-tools/steval-stlkt01v1.html
-- STMicroelectronics. (s. f.). *FP-SNS-ALLMEMS1: STM32Cube function pack for IoT node with Bluetooth Low Energy connectivity, digital microphone, environmental, and motion sensors*. STMicroelectronics. https://www.st.com/en/embedded-software/fp-sns-allmems1.html
-- STMicroelectronics. (s. f.). *STBLESensor: BLE sensor application for Android and iOS*. STMicroelectronics. https://www.st.com/en/embedded-software/stblesensor.html
-- STMicroelectronics. (s. f.). *STM32F030C8: Mainstream Arm Cortex-M0 MCU*. STMicroelectronics. https://www.st.com/en/microcontrollers-microprocessors/stm32f030c8.html
-- STMicroelectronics. (s. f.). *LSM6DS3TR-C: iNEMO inertial module, 3D accelerometer and 3D gyroscope*. STMicroelectronics. https://www.st.com/en/mems-and-sensors/lsm6ds3tr-c.html
-- onsemi. (s. f.). *CAT6219: 500 mA CMOS LDO regulator datasheet*. onsemi. https://www.onsemi.com/pdf/datasheet/cat6219-d.pdf
-- NanJing Top Power ASIC Corp. (s. f.). *TP4056: 1A standalone linear Li-ion battery charger datasheet*. https://www.tp4056.com/datasheet/
-- STMicroelectronics. (s. f.). *STM32CubeMX*. STMicroelectronics. https://www.st.com/en/development-tools/stm32cubemx.html
-- STMicroelectronics. (s. f.). *STM32CubeIDE*. STMicroelectronics. https://www.st.com/en/development-tools/stm32cubeide.html
-- STMicroelectronics. (s. f.). *STM32CubeProgrammer software description*. STMicroelectronics. https://www.st.com/resource/en/user_manual/dm00403500-stm32cubeprogrammer-software-description-stmicroelectronics.pdf
-- Git. (s. f.). *Git documentation*. https://git-scm.com/docs/git.html
-- Mariana-zy. (2026). *fp-sns-allmems1: Prototipo con SensorTile y firmware ALLMEMS1* [Repositorio de GitHub]. GitHub. https://github.com/Mariana-zy/fp-sns-allmems1
+- Advanced Monolithic Systems. (s. f.). AMS1117 Voltage Regulator Datasheet. Digi-Key. https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5011/AMS1117.pdf
+- 3PEAK. (s. f.). TPB4056A Linear Li-Ion Battery Charger Datasheet. 3PEAK. https://static.3peak.com/res/doc/ds/Datasheet_TPB4056A.pdf
+- Espressif Systems. (s. f.). ESP32-C6 Series Datasheet. Espressif. https://documentation.espressif.com/esp32-c6_datasheet_en.pdf
+- MANUS. (s. f.). MANUS products: Professional glove-based motion capture systems. MANUS. https://www.manus-meta.com/products/overview
+- Mariana-zy. (2026). fp-sns-allmems1: Prototipo con SensorTile y firmware ALLMEMS1 [Repositorio de GitHub]. GitHub. https://github.com/Mariana-zy/fp-sns-allmems1
+- Mariana-zy. (2026). GestureMouse-STM32: Diseño de PCB y documentación de un guante controlador gestual [Repositorio de GitHub]. GitHub. https://github.com/Mariana-zy/GestureMouse-STM32
+- onsemi. (s. f.). CAT6219 500 mA CMOS Low Dropout Regulator Datasheet. LCSC. https://www.lcsc.com/datasheet/C255621.pdf
+- SHOU HAN. (s. f.). USB TYPE-C-3.1-16PIN Datasheet. LCSC. https://www.lcsc.com/datasheet/C7507405.pdf
+- STMicroelectronics. (2019). UM2101: Getting started with the STEVAL-STLKT01V1 SensorTile integrated development platform. STMicroelectronics. https://www.st.com/resource/en/user_manual/um2101-getting-started-with-the-stevalstlkt01v1-- sensortile-integrated-development-platform-stmicroelectronics.pdf
+- STMicroelectronics. (s. f.). FP-SNS-ALLMEMS1: STM32Cube function pack for IoT node with Bluetooth Low Energy connectivity, digital microphone, environmental, and motion sensors. STMicroelectronics. https://www.st.com/en/embedded-- - - software/fp-sns-allmems1.html
+- STMicroelectronics. (s. f.). LSM6DS3TR-C iNEMO Inertial Module Datasheet. LCSC. https://www.lcsc.com/datasheet/C967633.pdf
+- STMicroelectronics. (s. f.). STBLESensor: BLE sensor application for Android and iOS. STMicroelectronics. https://www.st.com/en/embedded-software/stblesensor.html
+- STMicroelectronics. (s. f.). STM32CubeIDE. STMicroelectronics. https://www.st.com/en/development-tools/stm32cubeide.html
+- STMicroelectronics. (s. f.). STM32CubeMX. STMicroelectronics. https://www.st.com/en/development-tools/stm32cubemx.html
+- STMicroelectronics. (s. f.). STM32CubeProgrammer software description. STMicroelectronics. https://www.st.com/resource/en/user_manual/dm00403500-stm32cubeprogrammer-software-description-stmicroelectronics.pdf
+- STMicroelectronics. (s. f.). STM32F030x4/x6/x8/xC Datasheet. STMicroelectronics. https://www.st.com/resource/en/datasheet/stm32f030f4.pdf
+- YouTube. (s. f.). Video de inspiración para el proyecto de guante/controlador gestual. YouTube. https://www.youtube.com/watch?v=LUPaY_fYAWU
 
