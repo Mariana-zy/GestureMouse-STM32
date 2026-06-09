@@ -257,11 +257,9 @@ Batería LiPo 3.7 V
 ### Consumo estimado
 
 ```text
-Sistema base       aprox. 50 mA
 ESP32-C6 promedio  aprox. 80 mA
 Total promedio     aprox. 130 mA
 
-Sistema base       aprox. 50 mA
 ESP32-C6 pico      aprox. 200 mA
 Total pico         aprox. 250 mA
 ```
