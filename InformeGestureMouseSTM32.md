@@ -426,7 +426,7 @@ La PCB secundaria contiene la IMU del dedo, sus capacitores de desacople y el co
 
 Las vistas de las PCB's se encuentran en:
 
-- [Diseño de PCB](<docs/Fase4_PCB's/PCB's.pdf>)
+- [Diseño de PCB's](<docs/Fase4_PCB's/PCB's.pdf>)
 
 ---
 
