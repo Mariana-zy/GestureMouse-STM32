@@ -12,18 +12,39 @@ El sistema está pensado para funcionar como un dispositivo portátil alimentado
 
 - [Contextualización](#contextualización)
 - [Objetivos](#objetivos)
+  - [Objetivo general](#objetivo-general)
+  - [Objetivos de esta etapa](#objetivos-de-esta-etapa)
 - [Evolución del proyecto](#evolución-del-proyecto)
-- [Prueba de concepto](#prueba-de-concepto)
-- [Arquitectura general](#arquitectura-general)
-- [Diagramas del sistema](#diagramas-del-sistema)
-- [Diseño electrónico](#diseño-electrónico)
-- [Árbol de potencia](#árbol-de-potencia)
-- [Diseño de PCB](#diseño-de-pcb)
-- [Firmware propuesto](#firmware-propuesto)
-- [Validación esperada](#validación-esperada)
+  - [Fase 1: Nota de aplicación](#fase-1-nota-de-aplicación)
+  - [Principio de funcionamiento de la IMU](#principio-de-funcionamiento-de-la-imu)
+  - [Fase 2: Prueba de concepto](#fase-2-prueba-de-concepto)
+  - [Hardware usado](#hardware-usado)
+  - [Firmware usado](#firmware-usado)
+  - [Validaciones logradas](#validaciones-logradas)
+  - [Limitación detectada](#limitación-detectada)
+  - [Fase 3: Diagramas del sistema](#fase-3-diagramas-del-sistema)
+  - [Diagrama de bloques de hardware](#diagrama-de-bloques-de-hardware)
+  - [Diagrama de bloques de firmware](#diagrama-de-bloques-de-firmware)
+  - [Árbol de potencia](#arbol-de-potencia)
+  - [Consumo estimado](#consumo-estimado)
+  - [Potencia total](#potencia-total)
+  - [Autonomía ideal](#autonomia-ideal)
+  - [Fase 4: Diseño electrónico y PCB](#fase-4-diseño-electrónico-y-pcb)
+  - [Selección del regulador](#selección-del-regulador)
+  - [Cálculo térmico del nuevo LDO CAT6219](#calculo-termico-del-nuevo-ldo-cat6219)
+  - [Esquemático por bloques](#esquemático-por-bloques)
+  - [Diseño de PCB](#diseño-de-pcb)
+  - [PCB principal](#pcb-principal)
+  - [PCB secundaria](#pcb-secundaria)
+  - [Fase 5: Presentación del proyecto](#fase-5-presentación-del-proyecto)
+- [Validación esperada](#validacion-esperada)
 - [Alcance y aplicaciones](#alcance-y-aplicaciones)
-- [Limitaciones](#limitaciones)
-- [Trabajo futuro](#trabajo-futuro)
+  - [Alcance actual](#alcance-actual)
+  - [Aplicaciones posibles](#aplicaciones-posibles)
+  - [Limitaciones actuales](#limitaciones-actuales)
+  - [Trabajo futuro](#trabajo-futuro)
+- [Reflexión final](#reflexion-final)
+- [Resumen de archivos en docs](#resumen-de-archivos-en-docs)
 - [Referencias](#referencias)
 
 ---
@@ -528,6 +549,7 @@ docs/
 ---
 
 ## Referencias
+
 
 - STMicroelectronics. (s. f.). *STEVAL-STLKT01V1: SensorTile connectable sensor node: Sensor and connectivity development kit*. STMicroelectronics. https://www.st.com/en/evaluation-tools/steval-stlkt01v1.html
 - STMicroelectronics. (s. f.). *FP-SNS-ALLMEMS1: STM32Cube function pack for IoT node with Bluetooth Low Energy connectivity, digital microphone, environmental, and motion sensors*. STMicroelectronics. https://www.st.com/en/embedded-software/fp-sns-allmems1.html
