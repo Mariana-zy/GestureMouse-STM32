@@ -38,9 +38,8 @@ El sistema está pensado para funcionar como un dispositivo portátil alimentado
     - [PCB secundaria](#pcb-secundaria)
   - [Fase 5: Presentación del proyecto](#fase-5-presentación-del-proyecto)
 - [Validación esperada](#validacion-esperada)
-- [Alcance y aplicaciones](#alcance-y-aplicaciones)
-  - [Alcance actual](#alcance-actual)
-  - [Aplicaciones posibles](#aplicaciones-posibles)
+- [Alcance actual](#alcance-actual)
+- [Aplicaciones posibles](#aplicaciones-posibles)
 - [Limitaciones actuales](#limitaciones-actuales)
 - [Trabajo futuro](#trabajo-futuro)
 - [Reflexión final](#reflexion-final)
@@ -458,9 +457,7 @@ La validacion inicial debe realizarse en el siguiente orden:
 
 ---
 
-## Alcance y aplicaciones
-
-### Alcance actual
+## Alcance actual
 
 Hasta esta etapa del proyecto se logró:
 
@@ -474,7 +471,7 @@ Hasta esta etapa del proyecto se logró:
 - Diseñar la PCB secundaria para la IMU del dedo.
 - Preparar la documentación técnica del proyecto.
 
-### Aplicaciones posibles
+## Aplicaciones posibles
 
 El sistema puede utilizarse como base para:
 
@@ -486,7 +483,7 @@ El sistema puede utilizarse como base para:
 - Control de sistemas robóticos.
 - Interacción humano-máquina sin contacto directo.
 
-### Limitaciones actuales
+## Limitaciones actuales
 
 - El sistema aún debe fabricarse y ensamblarse físicamente.
 - La comunicación BLE HID debe integrarse con el ESP32-C6.
@@ -495,7 +492,7 @@ El sistema puede utilizarse como base para:
 - La autonomía real de la batería debe medirse experimentalmente.
 - Se debe validar el comportamiento eléctrico con batería real.
 
-### Trabajo futuro
+## Trabajo futuro
 
 - Fabricar PCB principal y PCB de dedo.
 - Ensamblar componentes.
