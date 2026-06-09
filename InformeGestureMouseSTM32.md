@@ -110,7 +110,7 @@ Durante la prueba se utilizó firmware de referencia basado en **FP-SNS-ALLMEMS1
 La prueba de concepto fue importante porque permitió entender el funcionamiento general de una plataforma con IMU, microcontrolador y comunicación inalámbrica. También permitió identificar la necesidad de diseñar una alimentación propia y estable para una versión personalizada del sistema.
 
 - [Documento de prueba de concepto](<docs/Fase2_PruebaConcepto/PruebaConcepto.pdf>)
-- [Video de la prueba de concepto](<docs/Fase2_PruebaConcepto/Enlaces.md>)
+- [Video de la prueba de concepto](<docs/Fase2_PruebaConcepto/Video.md>)
 - [Enlaces usados en la prueba de concepto](<docs/Fase2_PruebaConcepto/Enlaces.md>)
 
 ### Hardware usado
