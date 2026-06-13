@@ -94,7 +94,7 @@ Documento relacionado:
 
 - [Diagramas de bloques de hardware y firmware](<../Fase3_Diagramas/DiagramasBloques.pdf>)
 
-![Arquitectura general del sistema](../images/SeparacionFunciones.png)
+![Arquitectura general del sistema](images/SeparacionFunciones.png)
 
 ---
 
@@ -111,7 +111,7 @@ Decisión final:
 - **STM32F030:** lectura de sensores, procesamiento inicial, control de GPIO, LEDs, botones y programación SWD.
 - **ESP32-C6:** comunicación inalámbrica Bluetooth Low Energy y posible perfil HID tipo mouse.
 
-![Comparación entre STM32F030 y ESP32-C6](../images/ComparacionMCUs.png)
+![Comparación entre STM32F030 y ESP32-C6](images/ComparacionMCUs.png)
 ---
 
 ## Principio De Funcionamiento De La IMU
@@ -210,7 +210,7 @@ Documentos relacionados:
 
 Imagen sugerida:
 
-![Comparación de dropout entre AMS1117 y CAT6219](../images/DecisionesDiseno.png)
+![Comparación de dropout entre AMS1117 y CAT6219](images/DecisionesDiseno.png)
 
 ---
 
@@ -395,7 +395,7 @@ Documento relacionado:
 
 Imagen sugerida:
 
-![Vista de la PCB principal](../images/PCBPrincipal.png)
+![Vista de la PCB principal](images/PCBPrincipal.png)
 
 ---
 
@@ -412,7 +412,7 @@ La conexión entre la PCB principal y la PCB secundaria requiere:
 - MISO.
 - CS de la IMU del dedo.
 
-![Vista de la PCB secundaria de la IMU del dedo](../images/PCBDedo.png)
+![Vista de la PCB secundaria de la IMU del dedo](images/PCBDedo.png)
 
 ---
 
