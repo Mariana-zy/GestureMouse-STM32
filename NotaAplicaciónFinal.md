@@ -1,99 +1,125 @@
-# GestureMouse STM32
+# Nota de Aplicación: GestureMouse STM32
 
-## Informe
-
-**GestureMouse STM32** es un sistema embebido portátil tipo guante/controlador gestual, diseñado para detectar movimientos de la mano y de un dedo mediante sensores inerciales IMU. El proyecto utiliza un microcontrolador **STM32F030C8T6** como unidad principal de control, encargado de leer las IMU por comunicación SPI, procesar la información de movimiento y servir como base para generar acciones tipo mouse, como movimiento de cursor, clic, scroll o arrastre.
-
-El sistema está pensado para funcionar como un dispositivo portátil alimentado por batería LiPo, con entrada USB-C para carga, regulación a 3.3 V, comunicación con sensores de movimiento e integración de un **ESP32-C6** para comunicación inalámbrica mediante Bluetooth Low Energy.
+Guía técnica para el diseño de un guante controlador gestual basado en STM32, sensores IMU y comunicación Bluetooth Low Energy.
 
 ---
 
-## Tabla de contenido
+## Resumen
 
-- [Contextualización](#contextualización)
-- [Objetivos](#objetivos)
-  - [Objetivo general](#objetivo-general)
-  - [Objetivos de esta etapa](#objetivos-de-esta-etapa)
-- [Evolución del proyecto](#evolución-del-proyecto)
-  - [Fase 1: Nota de aplicación](#fase-1-nota-de-aplicación)
-    - [Principio de funcionamiento de la IMU](#principio-de-funcionamiento-de-la-imu)
-  - [Fase 2: Prueba de concepto](#fase-2-prueba-de-concepto)
-    - [Hardware usado](#hardware-usado)
-    - [Firmware usado](#firmware-usado)
-    - [Validaciones logradas](#validaciones-logradas)
-    - [Limitación detectada](#limitación-detectada)
-  - [Fase 3: Diagramas del sistema](#fase-3-diagramas-del-sistema)
-    - [Diagrama de bloques de hardware](#diagrama-de-bloques-de-hardware)
-    - [Diagrama de bloques de firmware](#diagrama-de-bloques-de-firmware)
-    - [Árbol de potencia](#arbol-de-potencia)
-    - [Consumo estimado](#consumo-estimado)
-    - [Potencia total](#potencia-total)
-    - [Autonomía ideal](#autonomia-ideal)
-  - [Fase 4: Diseño electrónico y PCB](#fase-4-diseño-electrónico-y-pcb)
-    - [Selección del regulador](#selección-del-regulador)
-    - [Cálculo térmico del nuevo LDO CAT6219](#calculo-termico-del-nuevo-ldo-cat6219)
-    - [Esquemático por bloques](#esquemático-por-bloques)
-    - [Diseño de PCB](#diseño-de-pcb)
-    - [PCB principal](#pcb-principal)
-    - [PCB secundaria](#pcb-secundaria)
-  - [Fase 5: Presentación del proyecto](#fase-5-presentación-del-proyecto)
-- [Validación esperada](#validacion-esperada)
-- [Alcance actual](#alcance-actual)
-- [Aplicaciones posibles](#aplicaciones-posibles)
-- [Limitaciones actuales](#limitaciones-actuales)
-- [Trabajo futuro](#trabajo-futuro)
-- [Reflexión final](#reflexion-final)
-- [Resumen de archivos en docs](#resumen-de-archivos-en-docs)
+**GestureMouse STM32** es un sistema embebido portátil tipo guante, diseñado para detectar movimientos de la mano y de un dedo mediante sensores inerciales IMU. El sistema utiliza un **STM32F030C8T6** como microcontrolador principal para leer las IMU mediante comunicación SPI, procesar la información de movimiento y servir como base para generar acciones tipo mouse.
+
+La comunicación inalámbrica se plantea mediante un **ESP32-C6**, usado como módulo dedicado a Bluetooth Low Energy. De esta forma, el STM32F030 se encarga del control y procesamiento local, mientras que el ESP32-C6 permite enviar los comandos al computador como eventos tipo mouse.
+
+Esta nota de aplicación describe la arquitectura del sistema, los criterios de diseño electrónico, los bloques de hardware, la distribución de potencia, la separación de la PCB del dedo y el procedimiento recomendado para validar el prototipo.
+
+---
+
+## Tabla De Contenido
+
+- [Descripción General Del Producto](#descripción-general-del-producto)
+- [Caso De Uso](#caso-de-uso)
+- [Requerimientos Del Sistema](#requerimientos-del-sistema)
+- [Arquitectura General Del Sistema](#arquitectura-general-del-sistema)
+- [Selección Del Controlador Principal](#selección-del-controlador-principal)
+- [Principio De Funcionamiento De La IMU](#principio-de-funcionamiento-de-la-imu)
+- [Diseño De Hardware Por Bloques](#diseño-de-hardware-por-bloques)
+- [Conexiones Principales Del Sistema](#conexiones-principales-del-sistema)
+- [Árbol De Potencia Y Consumo](#árbol-de-potencia-y-consumo)
+- [Diseño De PCB](#diseño-de-pcb)
+- [Recomendaciones De Diseño PCB](#recomendaciones-de-diseño-pcb)
+- [Firmware Propuesto](#firmware-propuesto)
+- [Procedimiento De Validación Recomendado](#procedimiento-de-validación-recomendado)
+- [Resultados Esperados](#resultados-esperados)
+- [Evolución Del Desarrollo](#evolución-del-desarrollo)
+- [Aplicaciones Posibles](#aplicaciones-posibles)
+- [Limitaciones Y Consideraciones](#limitaciones-y-consideraciones)
+- [Trabajo Futuro](#trabajo-futuro)
+- [Conclusión](#conclusión)
 - [Referencias](#referencias)
 
 ---
 
-## Contextualización
+## Descripción General Del Producto
 
-Las interfaces tradicionales como el mouse y el teclado requieren contacto físico directo. Esto puede limitar algunas formas de interaccion, especialmente en aplicaciones de accesibilidad, control remoto, presentaciones, realidad virtual o sistemas roboticos.
+El producto final propuesto es un guante controlador gestual capaz de interpretar movimientos de la mano y del dedo para generar acciones tipo mouse. La PCB principal se ubica en el dorso de la mano y contiene el microcontrolador, la entrada de alimentación, el cargador de batería, el regulador de voltaje, la IMU principal, los botones, los LEDs y los conectores de programación/comunicación.
 
-El proyecto propone un guante controlador gestual que interpreta movimientos naturales de la mano y del dedo para convertirlos en acciones tipo mouse. La solucion busca ser portatil, alimentada por bateria y con comunicacion inalambrica BLE HID.
+La IMU del dedo se ubica en una PCB secundaria para medir directamente el movimiento del dedo. Esta separación permite que cada sensor mida el movimiento correspondiente: la IMU de la mano registra la orientación general, mientras que la IMU del dedo registra movimientos más específicos para gestos como clic, selección o activación.
 
----
-
-## Objetivos
-
-### Objetivo general
-
-Diseñar un sistema embebido portátil capaz de detectar movimientos de mano y dedo mediante sensores IMU, con el fin de servir como base para un controlador gestual tipo mouse.
-
-### Objetivos de esta etapa
-
-- Diseñar una PCB principal para el sistema GestureMouse STM32.
-- Implementar entrada de alimentación por USB-C.
-- Integrar carga de bateria LiPo.
-- Regular el sistema a 3.3 V.
-- Programar el STM32 mediante SWD.
-- Leer sensores IMU mediante SPI.
-- Separar físicamente la IMU del dedo en una PCB secundaria.
-- Dejar comunicación UART disponible para integración con ESP32-C6.
-- Documentar el sistema mediante diagramas, esquemáticos, PCB e informe técnico.
+El sistema está pensado para funcionar con batería LiPo, cargarse mediante USB-C y comunicarse con el computador mediante Bluetooth Low Energy usando un ESP32-C6.
 
 ---
 
-## Evolución del proyecto
+## Caso De Uso
 
-El proyecto evolucionó desde una idea inicial basada en un guante gestual inalámbrico hasta el diseño de una PCB personalizada. Este se divide en cinco fases principales:
+GestureMouse STM32 está orientado a aplicaciones donde el usuario necesita controlar un computador o dispositivo sin usar un mouse físico tradicional. Por ejemplo, el movimiento de la mano puede asociarse al desplazamiento del cursor, mientras que el movimiento del dedo puede utilizarse para acciones como clic, selección, scroll o arrastre.
 
-### Fase 1: Nota de aplicación
+Aunque la implementación completa de gestos depende del firmware final, la arquitectura propuesta deja preparada la base de hardware necesaria para desarrollar estas funciones.
 
-En esta fase se planteó la idea inicial del proyecto, se definió el contexto de uso y se analizaron referencias relacionadas con guantes gestuales, sensores de movimiento y comunicación inalámbrica.
+---
 
-- [Nota de aplicación](<docs/Fase1_NotaAplicación/NotaAplicación.pdf>)
-- [Enlaces de referencia](<docs/Fase1_NotaAplicación/Enlaces.md>)
+## Requerimientos Del Sistema
 
-Inicialmente se consideró usar un **ESP32-C6** como microcontrolador principal debido a que integra Bluetooth Low Energy. Sin embargo, durante el desarrollo se decidió usar el **STM32F030C8T6** como controlador principal, ya que permite organizar mejor la lectura de sensores, la programación por SWD, el manejo de periféricos y la validación de la electrónica base.
+Para cumplir con la aplicación propuesta, el sistema debe considerar los siguientes requerimientos:
 
-El ESP32-C6 se mantiene dentro de la arquitectura del proyecto, pero como módulo dedicado a la comunicación Bluetooth. De esta forma, el STM32 se encarga de leer y procesar los sensores, mientras que el ESP32-C6 puede recibir comandos por UART y transmitirlos al computador como eventos tipo mouse.
+- Alimentación portátil mediante batería LiPo.
+- Entrada USB-C para carga de batería.
+- Regulación estable a 3.3 V.
+- Lectura de sensores IMU mediante SPI.
+- Programación del microcontrolador mediante SWD.
+- Comunicación UART entre STM32F030 y ESP32-C6.
+- Comunicación inalámbrica mediante Bluetooth Low Energy.
+- PCB secundaria para ubicar la IMU del dedo.
+- Diseño modular y fácil de validar por bloques.
+- Consumo adecuado para una aplicación portátil.
 
-### Principio de funcionamiento de la IMU
+---
 
-En este punto es importante aclarar que es una IMU o unidad de medición inercial, esta integra sensores MEMS (Sistemas MicroElectroMecánicos) capaces de medir movimiento en varios ejes. Inlcuye tanto acelerómetro como giroscopio. 
+## Arquitectura General Del Sistema
+
+La arquitectura del sistema se basa en separar el procesamiento local de sensores y la comunicación inalámbrica. El STM32F030 se encarga de leer las IMU, procesar los movimientos y controlar las señales del sistema. El ESP32-C6 se utiliza como módulo dedicado a Bluetooth Low Energy.
+
+```text
+IMU mano + IMU dedo
+        |
+        | SPI
+        v
+STM32F030C8T6
+        |
+        | UART
+        v
+ESP32-C6
+        |
+        | Bluetooth Low Energy
+        v
+Computador
+```
+
+![Arquitectura general del sistema](docs/images/SeparacionFunciones.png)
+
+Documento relacionado:
+
+- [Diagramas de bloques de hardware y firmware](<docs/Fase3_Diagramas/DiagramasBloques.pdf>)
+
+---
+
+## Selección Del Controlador Principal
+
+Se decidió utilizar el **STM32F030C8T6** como microcontrolador principal porque permite centralizar la lectura de las IMU, el manejo de GPIO, la comunicación SPI, la comunicación UART y la programación mediante SWD. Además, su configuración desde STM32CubeMX y STM32CubeIDE facilita la validación inicial del hardware.
+
+El **ESP32-C6** se mantiene dentro del sistema, pero como módulo dedicado a la comunicación Bluetooth Low Energy. De esta forma, el STM32F030 se encarga del control y procesamiento local, mientras que el ESP32-C6 recibe comandos por UART y los transmite al computador como eventos tipo mouse.
+
+![Comparación entre STM32F030 y ESP32-C6](docs/images/ComparacionMCUs.png)
+
+La decisión final divide el sistema en dos funciones principales:
+
+- **STM32F030:** lectura de sensores, procesamiento de gestos, control de GPIO, LEDs, botones y programación SWD.
+- **ESP32-C6:** comunicación inalámbrica Bluetooth Low Energy y posible perfil HID tipo mouse.
+
+---
+
+## Principio De Funcionamiento De La IMU
+
+Una IMU, o unidad de medición inercial, integra sensores MEMS capaces de medir movimiento en varios ejes. En este proyecto se utiliza la **LSM6DS3TR-C**, que combina acelerómetro de 3 ejes y giroscopio de 3 ejes.
 
 El acelerómetro mide aceleración lineal en los ejes X, Y y Z. Cuando el sensor está quieto, también permite estimar inclinación respecto a la gravedad. El giroscopio mide velocidad angular, lo que permite detectar rotaciones y movimientos rápidos.
 
@@ -101,194 +127,175 @@ Al combinar ambas mediciones, el sistema puede identificar movimientos de la man
 
 ---
 
-### Fase 2: Prueba de concepto
+## Diseño De Hardware Por Bloques
 
-En esta fase se validó la idea del proyecto usando una plataforma de desarrollo existente. Se utilizó el kit **STEVAL-STLKT01V1 SensorTile** de STMicroelectronics para probar lectura de sensores y comunicación Bluetooth mediante una aplicación móvil.
+El sistema se organizó por bloques para facilitar el diseño, revisión y validación del hardware.
 
-Durante la prueba se utilizó firmware de referencia basado en **FP-SNS-ALLMEMS1**, junto con la aplicación móvil **ST BLE Sensor**. Con esto se logró visualizar información real de sensores como acelerómetro, giroscopio y temperatura.
+### Entrada USB-C
 
-La prueba de concepto fue importante porque permitió entender el funcionamiento general de una plataforma con IMU, microcontrolador y comunicación inalámbrica. También permitió identificar la necesidad de diseñar una alimentación propia y estable para una versión personalizada del sistema.
+Este bloque recibe 5 V desde el puerto USB-C. En este proyecto el USB-C se usa únicamente para alimentación y carga de batería, por lo que no se utilizan las líneas diferenciales de datos USB.
 
-- [Documento de prueba de concepto](<docs/Fase2_PruebaConcepto/PruebaConcepto.pdf>)
-- [Video de la prueba de concepto](<docs/Fase2_PruebaConcepto/Video.md>)
-- [Enlaces usados en la prueba de concepto](<docs/Fase2_PruebaConcepto/Enlaces.md>)
+Las resistencias de 5.1 kΩ en CC1 y CC2 permiten que una fuente USB-C reconozca la tarjeta como dispositivo consumidor de energía.
 
-### Hardware usado
+Documento relacionado:
 
-- SensorTile STEVAL-STLKT01V1.
-- Cradle o base del SensorTile.
-- STM32 Nucleo-L476RG usada como programador ST-LINK externo.
-- Cable SWD.
-- Cable USB.
-- Aplicacion movil ST BLE Sensor.
+- [Datasheet USB TYPE-C-3.1-16PIN](https://www.lcsc.com/datasheet/C7507405.pdf)
 
-### Firmware usado
+### Cargador De Batería LiPo
 
-Se utilizo el paquete oficial:
+Este bloque controla la carga de la batería LiPo a partir de la entrada USB-C. Incluye LEDs indicadores de estado de carga y una resistencia de programación para definir la corriente de carga.
+
+Con una resistencia de programación de 3.3 kΩ, la corriente aproximada de carga es:
 
 ```text
-FP-SNS-ALLMEMS1
-Projects
-STM32L476JG-SensorTile
-Applications
-ALLMEMS1
-STM32CubeIDE
+I_CHG = 1200 / R_PROG
+I_CHG = 1200 / 3.3
+I_CHG ≈ 364 mA
 ```
 
-Este firmware permite leer sensores del SensorTile y transmitir informacion por Bluetooth Low Energy hacia la aplicacion movil ST BLE Sensor.
+Este valor es adecuado para una batería LiPo de 1000 mAh, ya que corresponde aproximadamente a 0.36 C.
 
-### Validaciones logradas
+Documento relacionado:
 
-- Programacion del SensorTile por SWD.
-- Compilacion y carga del firmware ALLMEMS1.
-- Visualizacion de datos reales de acelerometro, giroscopio y temperatura.
-- Transmision BLE hacia el celular.
-- Confirmacion de que la lectura de sensores y comunicacion inalambrica eran viables para el proyecto.
+- [Datasheet TPB4056A](https://static.3peak.com/res/doc/ds/Datasheet_TPB4056A.pdf)
 
-### Limitacion detectada
+### Regulación De 3.3 V
 
-Durante las pruebas se observó dependencia de la Nucleo o del cable SWD para alimentacion o referencia de voltaje. Esto permitio identificar la necesidad de una alimentacion independiente y estable en el diseno final.
+Este bloque genera la alimentación principal del sistema. Inicialmente se consideró el regulador AMS1117-3.3, pero se descartó debido a su alto voltaje de dropout para una aplicación alimentada con batería LiPo.
+
+Una batería LiPo de una celda tiene aproximadamente:
+
+```text
+4.2 V completamente cargada
+3.7 V nominal
+```
+
+El AMS1117 puede requerir alrededor de 4.4 V para garantizar una salida estable de 3.3 V, por lo que no aprovecha correctamente el rango útil de la batería.
+
+Por esta razón se seleccionó el **CAT6219**, un LDO de bajo dropout. Este regulador permite mantener una salida cercana a 3.3 V durante una mayor parte de la descarga de la batería.
+
+![Decisiones de regulación](docs/images/DecisionesDiseno.png)
+
+Documentos relacionados:
+
+- [Datasheet AMS1117](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5011/AMS1117.pdf)
+- [Datasheet CAT6219](https://www.lcsc.com/datasheet/C255621.pdf)
+
+### Alimentación Del STM32
+
+Este bloque incluye la conexión de los pines VDD, VDDA, VSS y VSSA del microcontrolador, además de capacitores de desacople cercanos a los pines de alimentación.
+
+Los capacitores de 0.1 uF deben ubicarse lo más cerca posible de los pines del microcontrolador, ya que ayudan a reducir ruido local y estabilizar la alimentación durante cambios rápidos de corriente.
+
+### Microcontrolador STM32F030
+
+Este bloque contiene el controlador principal del sistema. Sus funciones son:
+
+- Leer las IMU mediante SPI.
+- Controlar señales de chip select independientes.
+- Manejar LEDs y botones.
+- Permitir programación por SWD.
+- Comunicarse por UART con el ESP32-C6.
+
+Documento relacionado:
+
+- [Datasheet STM32F030](https://www.st.com/resource/en/datasheet/stm32f030f4.pdf)
+
+### Sensores IMU
+
+Las IMU se conectan mediante SPI. La IMU de la mano se ubica en la PCB principal y la IMU del dedo se ubica en una PCB secundaria.
+
+La comunicación SPI utiliza las señales:
+
+- SCK: reloj de comunicación.
+- MOSI: datos desde STM32 hacia IMU.
+- MISO: datos desde IMU hacia STM32.
+- CS: selección individual de cada IMU.
+
+Documento relacionado:
+
+- [Datasheet IMU LSM6DS3TR-C](https://www.lcsc.com/datasheet/C967633.pdf)
+
+### Comunicación Con ESP32-C6
+
+El ESP32-C6 se conecta al STM32 mediante UART. Su función principal es recibir comandos desde el STM32 y transmitirlos al computador mediante Bluetooth Low Energy.
+
+Esta decisión permite que el STM32 se enfoque en el control local y que el ESP32-C6 se encargue únicamente de la comunicación inalámbrica.
+
+Documento relacionado:
+
+- [Datasheet ESP32-C6](https://documentation.espressif.com/esp32-c6_datasheet_en.pdf)
+
+### Programación Y Depuración
+
+La programación del STM32 se realiza mediante SWD usando las señales:
+
+- SWDIO.
+- SWCLK.
+- NRST.
+- 3.3 V.
+- GND.
+
+Este método permite cargar firmware y depurar el microcontrolador sin depender del ESP32-C6.
 
 ---
 
-### Fase 3: Diagramas del sistema
+## Conexiones Principales Del Sistema
 
-Esta fase contiene los diagramas principales del proyecto. Se incluyen los diagramas de bloques de hardware y firmware, además del árbol de potencia usado para analizar el flujo de energía del sistema.
+| Señal | Pin STM32F030 | Función |
+|---|---|---|
+| SPI1_SCK | PA5 | Reloj SPI para IMU |
+| SPI1_MISO | PA6 | Datos desde IMU hacia STM32 |
+| SPI1_MOSI | PA7 | Datos desde STM32 hacia IMU |
+| USART1_TX | PA9 | Transmisión UART hacia ESP32-C6 |
+| USART1_RX | PA10 | Recepción UART desde ESP32-C6 |
+| SWDIO | PA13 | Programación y depuración |
+| SWCLK | PA14 | Reloj de programación SWD |
+| BTN_USER | PA0 | Botón de usuario |
+| LED_STATUS | PC13 | Indicador de estado |
+| LED_ERROR | PC14 | Indicador de error |
 
-La arquitectura actual del sistema se resume asi:
+---
 
-```text
-Movimiento de mano/dedo
-        |
-        v
-IMU LSM6DS3TR-C
-        |
-        v
-SPI
-        |
-        v
-STM32F030C8T6
-        |
-        v
-Procesamiento local de gestos
-        |
-        v
-UART debug / ESP32-C6
-        |
-        v
-Computador
-```
+## Árbol De Potencia Y Consumo
 
-### Diagrama de bloques de hardware
-
-El diagrama de bloques muestra el flujo de energia, sensado, procesamiento y comunicacion del sistema.
-
-Flujo general del hardware:
-
-```text
-USB-C / Batería
-       ↓
-Regulación 3.3 V
-       ↓
-STM32F030
-   ↙     ↓     ↘
-IMU   UART   LEDs/Botones
-       ↓
-    ESP32-C6
-       ↓
-      BLE
-       ↓
-  Computador
-```
-
-### Diagrama de bloques de firmware 
-
-El firmware inicial se plantea como una validación progresiva del hardware. La primera meta no es implementar directamente el mouse completo, sino comprobar que el sistema puede alimentar correctamente los bloques y leer las IMU mediante SPI.
-
-Flujo general del firmware:
-
-```text
-Inicio
-  ↓
-Configuración de reloj
-  ↓
-Inicialización GPIO
-  ↓
-Inicialización SPI
-  ↓
-Inicialización UART
-  ↓
-Lectura función de la IMU
-  ↓
-Validación de comunicación SPI
-  ↓
-Lectura de acelerómetro y giroscopio
-  ↓
-Filtrado básico
-  ↓
-Interpretación de gestos
-  ↓
-Envío de comandos por UART
-```
-
-El diagrama detallado de firmware se encuentra junto con el diagrama detallado de hardware en:
-
-- [Diagramas de bloques de hardware y firmware](<docs/Fase3_Diagramas/DiagramasBloques.pdf>)
-
-### Arbol de potencia
-
-El sistema recibe alimentación desde un puerto USB-C, usado únicamente para energía y carga de batería. No se utilizan las líneas de datos USB.
-
-La batería LiPo se carga mediante un circuito integrado de carga, y posteriormente el voltaje de la batería se regula a 3.3 V para alimentar el STM32, las IMU y los demás circuitos digitales.
-
-Flujo general del árbol de potencia:
+El sistema recibe energía desde USB-C para cargar la batería LiPo. La batería alimenta el regulador de 3.3 V, y desde esta línea se alimentan el STM32, las IMU y el ESP32-C6.
 
 ```text
 USB-C 5 V
-   │
-   ├── Cargador LiPo
-   │       │
-   │       ├── LEDs de carga
-   │       │   ├── CHRG
-   │       │   └── STDBY
-   │       │
-   │       └── Batería LiPo 3.7 V
-   │
-   └── Entrada de alimentación
-
-Batería LiPo 3.7 V
-   │
-   └── Regulador 3.3 V
-           │
-           ├── STM32F030C8T6
-           │       ├── LED de estado
-           │       ├── LED de error
-           │       ├── Botón de usuario
-           │       └── Reset
-           │
-           ├── IMU mano
-           │
-           ├── IMU dedo
-           │
-           └── ESP32-C6
-                   └── Bluetooth Low Energy
+   |
+   +-- Cargador LiPo
+           |
+           +-- Batería LiPo 3.7 V
+                   |
+                   +-- Regulador 3.3 V
+                           |
+                           +-- STM32F030
+                           +-- IMU mano
+                           +-- IMU dedo
+                           +-- ESP32-C6
 ```
 
-### Consumo estimado
+Documento relacionado:
+
+- [Árbol de potencia](<docs/Fase3_Diagramas/ÁrbolPotencia.pdf>)
+
+### Consumo Estimado
+
+| Bloque | Corriente aproximada |
+|---|---:|
+| Sistema base | 50 mA |
+| ESP32-C6 promedio | 80 mA |
+| Total promedio | 130 mA |
+| ESP32-C6 pico | 200 mA |
+| Total pico | 250 mA |
+
+### Potencia Total
+
+Con ESP32-C6 en consumo promedio:
 
 ```text
-ESP32-C6 promedio  aprox. 80 mA
-Total promedio     aprox. 130 mA
-
-ESP32-C6 pico      aprox. 200 mA
-Total pico         aprox. 250 mA
-```
-
-### Potencia total
-
-Con ESP32-C6 promedio
-
-```text
+P = V * I
 P = 3.3 V * 0.13 A
 P = 0.429 W
 ```
@@ -300,112 +307,24 @@ P = 3.3 V * 0.25 A
 P = 0.825 W
 ```
 
-### Autonomia ideal
+### Autonomía Ideal
 
-La autonomia ideal se calcula como:
-
-```text
-Autonomia = Capacidad bateria / Corriente total
-```
-
-Para una bateria de 1000 mAh:
+Para una batería de 1000 mAh:
 
 ```text
-Con ESP32-C6 promedio:
-Autonomia = 1000 mAh / 130 mA = 7.7 h
-
-Con ESP32-C6 en escenario conservador:
-Autonomia = 1000 mAh / 250 mA = 4 h
+Autonomía promedio = 1000 mAh / 130 mA = 7.7 h
+Autonomía conservadora = 1000 mAh / 250 mA = 4 h
 ```
 
-El árbol de potencia resume esta distribución:
-
-- [Árbol de potencia](<docs/Fase3_Diagramas/ÁrbolPotencia.pdf>)
+Estos valores son ideales y deben validarse experimentalmente, ya que la autonomía real depende del consumo final del firmware, el uso del ESP32-C6 y el comportamiento de la batería.
 
 ---
 
-### Fase 4: Diseño electrónico y PCB
-
-En esta fase se documenta el diseño electrónico del sistema. Incluye los criterios de diseño, los esquemáticos y las vistas de PCB. Esta es la etapa central del desarrollo de hardware del proyecto.
-
-### Selección del regulador
-
-Inicialmente se consideró el uso del regulador **AMS1117-3.3**, pero se descartó porque su caída de tensión es alta para un sistema alimentado con batería LiPo.
-
-Una batería LiPo de una celda tiene aproximadamente:
-
-```text
-4.2 V completamente cargada
-3.7 V nominal
-```
-
-El AMS1117 puede necesitar alrededor de 4.4 V para garantizar una salida estable de 3.3 V, por lo que no aprovecha correctamente el rango útil de la batería.
-
-Por esta razón se seleccionó el **CAT6219**, un LDO de bajo dropout. Este regulador permite mantener una salida cercana a 3.3 V durante una mayor parte de la descarga de la batería.
-
-### Calculo termico del nuevo LDO CAT6219
-
-La potencia disipada por el LDO se calcula como:
-
-```text
-P_LDO = (VIN - VOUT) * ILOAD
-```
-
-Con bateria completamente cargada:
-
-```text
-VIN = 4.2 V
-VOUT = 3.3 V
-VIN - VOUT = 0.9 V
-```
-
-Para una corriente de 250 mA:
-
-```text
-P_LDO = 0.9 V * 0.25 A
-P_LDO = 0.225 W
-```
-
-Temperatura de union estimada:
-
-```text
-TJ = TA + thetaJA * P
-TA = 25 C
-thetaJA = 235 C/W
-TJ = 25 + 235 * 0.225
-TJ = 77.9 C aprox.
-```
-
-Este valor esta por debajo del limite recomendado de 125 C. Sin embargo, si la corriente sube hacia 450 mA o 500 mA, el LDO puede acercarse a una temperatura no recomendable para operacion continua.
-
-La justificación completa de esta y otras decisiones se encuentra en:
-
-- [Criterios de diseño electrónico](<docs/Fase4_PCB's/CriteriosDiseño.pdf>)
-
-### Esquemático por bloques
-
-El esquemático se organizó por bloques para facilitar la revisión, depuración y fabricación del sistema.
-
-Los bloques principales son:
-
-- **Input / Power In:** entrada de alimentación por USB-C.
-- **Battery Charger:** carga de batería LiPo.
-- **Regulation 3.3 V:** generación de la alimentación principal del sistema.
-- **MCU Power:** alimentación y desacople del STM32.
-- **MCU STM32F030C8T6:** unidad principal de control.
-- **Debug / Program:** programación por SWD y comunicación UART.
-- **IMU Hand:** sensor IMU ubicado en la PCB principal.
-- **External Finger IMU:** conexión hacia la PCB secundaria del dedo.
-
-Los esquemáticos completos se encuentran en:
-
-- [Esquemáticos del proyecto](<docs/Fase4_PCB's/Esquemáticos.pdf>)
-
-### Diseño de PCB
+## Diseño De PCB
 
 El proyecto contempla una PCB principal y una PCB secundaria para la IMU del dedo.
 
-### PCB principal
+### PCB Principal
 
 La PCB principal integra:
 
@@ -415,22 +334,167 @@ La PCB principal integra:
 - STM32F030C8T6.
 - IMU de la mano.
 - Headers de programación.
-- Header UART.
+- Header UART hacia ESP32-C6.
 - Header hacia la IMU externa del dedo.
 - LEDs de estado.
 - Botones de usuario y reset.
 
-### PCB secundaria
+Documento relacionado:
 
-La PCB secundaria contiene la IMU del dedo, sus capacitores de desacople y el conector hacia la PCB principal. Esta separación permite ubicar físicamente el sensor sobre el dedo, manteniendo el procesamiento en la PCB principal.
+- [Diseño de PCB](<docs/Fase4_PCB's/PCB's.pdf>)
 
-Las vistas de las PCB's se encuentran en:
+![PCB principal](docs/images/PCBPrincipal.png)
 
-- [Diseño de PCB's](<docs/Fase4_PCB's/PCB's.pdf>)
+### PCB Secundaria Para IMU Del Dedo
+
+La PCB secundaria contiene la IMU del dedo, sus capacitores de desacople y el conector hacia la PCB principal. Esta separación permite medir el movimiento real del dedo y facilita la integración física en el guante.
+
+La conexión entre la PCB principal y la PCB secundaria requiere:
+
+- 3.3 V.
+- GND.
+- SCK.
+- MOSI.
+- MISO.
+- CS de la IMU del dedo.
+
+![PCB secundaria IMU dedo](docs/images/PCBDedo.png)
 
 ---
 
-### Fase 5: Presentación del proyecto
+## Recomendaciones De Diseño PCB
+
+Para mejorar la confiabilidad del diseño se recomienda:
+
+- Ubicar el capacitor de 0.1 uF lo más cerca posible de los pines de alimentación de cada IC.
+- Mantener las pistas SPI cortas y ordenadas.
+- Usar un plano de GND continuo.
+- Ubicar el regulador cerca de la entrada de alimentación del sistema.
+- Colocar la IMU con orientación clara y documentada.
+- Mantener el conector de la IMU externa accesible para cableado.
+- Separar visualmente los bloques de alimentación, control y sensores.
+- Evitar pistas largas innecesarias en señales de programación SWD.
+- Usar anchos de pista mayores en alimentación que en señales digitales.
+
+---
+
+## Firmware Propuesto
+
+El firmware inicial debe validar primero la lectura de sensores antes de implementar gestos completos.
+
+```text
+Inicio
+  |
+  v
+Configuración de reloj
+  |
+  v
+Inicialización GPIO
+  |
+  v
+Inicialización SPI
+  |
+  v
+Inicialización UART
+  |
+  v
+Lectura de IMU
+  |
+  v
+Validación de comunicación SPI
+  |
+  v
+Lectura de acelerómetro y giroscopio
+  |
+  v
+Filtrado básico
+  |
+  v
+Interpretación de gestos
+  |
+  v
+Envío de comandos por UART
+```
+
+Documento relacionado:
+
+- [Diagramas de bloques de hardware y firmware](<docs/Fase3_Diagramas/DiagramasBloques.pdf>)
+
+---
+
+## Procedimiento De Validación Recomendado
+
+La validación inicial debe realizarse en el siguiente orden:
+
+1. Verificar continuidad y ausencia de cortos.
+2. Alimentar por USB-C y revisar USB_5V.
+3. Verificar carga de batería.
+4. Medir salida de 3.3 V del regulador.
+5. Verificar alimentación del STM32.
+6. Programar el STM32 por SWD.
+7. Inicializar SPI.
+8. Revisar datos de la IMU de mano.
+9. Revisar datos de la IMU de dedo.
+10. Enviar datos por UART.
+11. Probar movimiento de sensores.
+12. Integrar ESP32-C6.
+13. Implementar detección básica de gestos.
+14. Probar comunicación Bluetooth Low Energy.
+
+---
+
+## Resultados Esperados
+
+Al finalizar la fabricación y ensamble del prototipo, se espera obtener:
+
+- Salida regulada estable de 3.3 V.
+- Carga correcta de batería LiPo mediante USB-C.
+- Programación correcta del STM32 mediante SWD.
+- Comunicación SPI funcional con las IMU.
+- Lectura de acelerómetro y giroscopio.
+- Transmisión de datos por UART hacia el ESP32-C6.
+- Base de hardware lista para implementar gestos.
+- Preparación para comunicación Bluetooth HID.
+
+Estos resultados permitirán avanzar hacia la implementación del mouse gestual inalámbrico.
+
+---
+
+## Evolución Del Desarrollo
+
+Antes de llegar al diseño final de la PCB, el proyecto se desarrolló en varias etapas. Primero se planteó la idea mediante una nota de aplicación inicial, luego se realizó una prueba de concepto con el kit SensorTile, después se definieron los diagramas de hardware y firmware, y finalmente se diseñaron los esquemáticos y las PCB del sistema.
+
+### Fase 1: Nota De Aplicación Inicial
+
+En esta fase se planteó la idea inicial del proyecto, se definió el contexto de uso y se analizaron referencias relacionadas con guantes gestuales, sensores de movimiento y comunicación inalámbrica.
+
+- [Nota de aplicación](<docs/Fase1_NotaAplicación/NotaAplicación.pdf>)
+- [Enlaces de referencia](<docs/Fase1_NotaAplicación/Enlaces.md>)
+
+### Fase 2: Prueba De Concepto
+
+En esta fase se validó la idea del proyecto usando el kit **STEVAL-STLKT01V1 SensorTile** de STMicroelectronics. Se utilizó firmware de referencia basado en **FP-SNS-ALLMEMS1** y la aplicación móvil **ST BLE Sensor** para visualizar datos reales de acelerómetro, giroscopio y temperatura.
+
+- [Documento de prueba de concepto](<docs/Fase2_PruebaConcepto/PruebaConcepto.pdf>)
+- [Video de la prueba de concepto](<docs/Fase2_PruebaConcepto/Video.md>)
+- [Enlaces usados en la prueba de concepto](<docs/Fase2_PruebaConcepto/Enlaces.md>)
+
+### Fase 3: Diagramas Del Sistema
+
+En esta fase se desarrollaron los diagramas principales del sistema, incluyendo el diagrama de bloques de hardware, el diagrama de firmware y el árbol de potencia.
+
+- [Diagramas de bloques](<docs/Fase3_Diagramas/DiagramasBloques.pdf>)
+- [Árbol de potencia](<docs/Fase3_Diagramas/ÁrbolPotencia.pdf>)
+
+### Fase 4: Diseño Electrónico Y PCB
+
+En esta fase se documentó el diseño electrónico del sistema, incluyendo criterios de diseño, esquemáticos y vistas de PCB.
+
+- [Criterios de diseño electrónico](<docs/Fase4_PCB's/CriteriosDiseño.pdf>)
+- [Esquemáticos del proyecto](<docs/Fase4_PCB's/Esquemáticos.pdf>)
+- [Diseño de PCB](<docs/Fase4_PCB's/PCB's.pdf>)
+
+### Fase 5: Presentación Del Proyecto
 
 Esta fase contiene las diapositivas utilizadas para presentar el proyecto, incluyendo contexto, objetivos, prueba de concepto, arquitectura, diseño electrónico, PCB y conclusiones.
 
@@ -438,40 +502,7 @@ Esta fase contiene las diapositivas utilizadas para presentar el proyecto, inclu
 
 ---
 
-## Validacion esperada
-
-La validacion inicial debe realizarse en el siguiente orden:
-
-1. Verificar continuidad y ausencia de cortos.
-2. Alimentar por USB-C y revisar `USB_5V`.
-3. Verificar carga de bateria.
-4. Medir salida de 3.3 V del regulador.
-5. Verificar alimentacion del STM32.
-6. Programar el STM32 por SWD.
-7. Inicializar SPI.
-8. Revisar datos de la IMU de mano.
-9. Revisar datos de la IMU de dedo.
-10. Enviar datos por UART.
-11. Probar movimiento de sensores.
-12. Implementar deteccion basica de gestos.
-
----
-
-## Alcance actual
-
-Hasta esta etapa del proyecto se logró:
-
-- Definir la arquitectura general del sistema.
-- Realizar una prueba de concepto con SensorTile.
-- Diseñar los diagramas de hardware y firmware.
-- Elaborar el árbol de potencia.
-- Diseñar el esquemático por bloques.
-- Seleccionar y justificar los componentes principales.
-- Diseñar la PCB principal.
-- Diseñar la PCB secundaria para la IMU del dedo.
-- Preparar la documentación técnica del proyecto.
-
-## Aplicaciones posibles
+## Aplicaciones Posibles
 
 El sistema puede utilizarse como base para:
 
@@ -483,85 +514,66 @@ El sistema puede utilizarse como base para:
 - Control de sistemas robóticos.
 - Interacción humano-máquina sin contacto directo.
 
-## Limitaciones actuales
+---
 
-- El sistema aún debe fabricarse y ensamblarse físicamente.
+## Limitaciones Y Consideraciones
+
+El diseño propuesto aún requiere fabricación, ensamble y validación experimental. Algunas consideraciones importantes son:
+
 - La comunicación BLE HID debe integrarse con el ESP32-C6.
-- El reconocimiento de gestos aún requiere desarrollo de firmware.
+- El reconocimiento de gestos requiere desarrollo de firmware adicional.
 - La IMU en encapsulado LGA puede ser difícil de soldar manualmente.
 - La autonomía real de la batería debe medirse experimentalmente.
-- Se debe validar el comportamiento eléctrico con batería real.
+- Se recomienda utilizar una batería LiPo con protección.
+- El cargador de batería no reemplaza un sistema completo de power-path.
+- El consumo del ESP32-C6 puede variar según el modo de operación BLE.
+- La orientación física de las IMU debe documentarse para facilitar el procesamiento de gestos.
 
-## Trabajo futuro
+---
 
-- Fabricar PCB principal y PCB de dedo.
+## Trabajo Futuro
+
+Como continuación del proyecto se propone:
+
+- Fabricar la PCB principal y la PCB de dedo.
 - Ensamblar componentes.
-- Validar alimentacion y consumo real.
+- Validar alimentación y consumo real.
 - Programar firmware base en STM32.
-- Leer IMU por SPI.
+- Leer correctamente las IMU mediante SPI.
 - Implementar filtros digitales.
 - Implementar reconocimiento de gestos.
 - Integrar ESP32-C6 para BLE HID.
-- Lograr que el computador reconozca el sistema como mouse inalambrico.
-- Mejorar ergonomia e integracion fisica en el guante.
+- Lograr que el computador reconozca el sistema como mouse inalámbrico.
+- Mejorar ergonomía e integración física en el guante.
 
 ---
 
-## Reflexion final
+## Conclusión
 
-La mayor dificultad tecnica fue integrar correctamente todos los bloques de hardware para que funcionaran como un sistema portatil. No era solo conectar el STM32 con las IMU, sino asegurar que la alimentacion desde bateria fuera estable, que el cargador LiPo estuviera bien conectado, que el regulador entregara 3.3 V adecuados y que las senales SPI, SWD y UART quedaran organizadas para facilitar programacion, validacion y futuras mejoras.
+GestureMouse STM32 presenta una arquitectura modular para un guante controlador gestual basado en sensores IMU. La separación entre el STM32F030 como controlador principal y el ESP32-C6 como módulo Bluetooth permite distribuir funciones de forma clara, reduciendo la complejidad del firmware principal.
 
-La parte mejor resuelta fue el bloque de alimentacion: entrada USB-C, carga LiPo y regulacion a 3.3 V. El cambio de AMS1117 a un LDO de bajo dropout permitio aprovechar mejor el rango de voltaje de la bateria.
+El diseño por bloques facilita la validación del hardware, desde la alimentación y regulación hasta la lectura de sensores y la comunicación externa. La PCB secundaria para la IMU del dedo permite adaptar el sistema a la forma física del guante y mejorar la medición del movimiento.
 
-El aprendizaje principal fue entender que disenar una PCB no es solo conectar componentes. Tambien requiere leer datasheets, calcular consumos, justificar decisiones, organizar el esquematico por bloques y pensar en fabricacion, montaje y pruebas.
-
----
-
-## Resumen de archivos en `docs`
-
-```text
-docs/
-├── Fase1_NotaAplicación/
-│   ├── NotaAplicación.pdf
-│   └── Enlaces.md
-│
-├── Fase2_PruebaConcepto/
-│   ├── PruebaConcepto.pdf
-│   ├── Video.mp4
-│   └── Enlaces.md
-│
-├── Fase3_Diagramas/
-│   ├── DiagramasBloques.pdf
-│   └── ÁrbolPotencia.pdf
-│
-├── Fase4_PCB's/
-│   ├── CriteriosDiseño.pdf
-│   ├── Esquemáticos.pdf
-│   └── PCB's.pdf
-│
-└── Fase5_Presentación/
-    └── Diapositivas.pdf
-```
+En conjunto, el diseño propuesto constituye una base técnica sólida para fabricar, ensamblar y validar un prototipo funcional de mouse gestual inalámbrico.
 
 ---
 
 ## Referencias
 
-- Advanced Monolithic Systems. (s. f.). AMS1117 Voltage Regulator Datasheet. Digi-Key. https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5011/AMS1117.pdf
-- 3PEAK. (s. f.). TPB4056A Linear Li-Ion Battery Charger Datasheet. 3PEAK. https://static.3peak.com/res/doc/ds/Datasheet_TPB4056A.pdf
-- Espressif Systems. (s. f.). ESP32-C6 Series Datasheet. Espressif. https://documentation.espressif.com/esp32-c6_datasheet_en.pdf
-- MANUS. (s. f.). MANUS products: Professional glove-based motion capture systems. MANUS. https://www.manus-meta.com/products/overview
-- Mariana-zy. (2026). fp-sns-allmems1: Prototipo con SensorTile y firmware ALLMEMS1 [Repositorio de GitHub]. GitHub. https://github.com/Mariana-zy/fp-sns-allmems1
-- Mariana-zy. (2026). GestureMouse-STM32: Diseño de PCB y documentación de un guante controlador gestual [Repositorio de GitHub]. GitHub. https://github.com/Mariana-zy/GestureMouse-STM32
-- onsemi. (s. f.). CAT6219 500 mA CMOS Low Dropout Regulator Datasheet. LCSC. https://www.lcsc.com/datasheet/C255621.pdf
-- SHOU HAN. (s. f.). USB TYPE-C-3.1-16PIN Datasheet. LCSC. https://www.lcsc.com/datasheet/C7507405.pdf
-- STMicroelectronics. (2019). UM2101: Getting started with the STEVAL-STLKT01V1 SensorTile integrated development platform. STMicroelectronics. https://www.st.com/resource/en/user_manual/um2101-getting-started-with-the-stevalstlkt01v1-- sensortile-integrated-development-platform-stmicroelectronics.pdf
-- STMicroelectronics. (s. f.). FP-SNS-ALLMEMS1: STM32Cube function pack for IoT node with Bluetooth Low Energy connectivity, digital microphone, environmental, and motion sensors. STMicroelectronics. https://www.st.com/en/embedded-- - - software/fp-sns-allmems1.html
-- STMicroelectronics. (s. f.). LSM6DS3TR-C iNEMO Inertial Module Datasheet. LCSC. https://www.lcsc.com/datasheet/C967633.pdf
-- STMicroelectronics. (s. f.). STBLESensor: BLE sensor application for Android and iOS. STMicroelectronics. https://www.st.com/en/embedded-software/stblesensor.html
-- STMicroelectronics. (s. f.). STM32CubeIDE. STMicroelectronics. https://www.st.com/en/development-tools/stm32cubeide.html
-- STMicroelectronics. (s. f.). STM32CubeMX. STMicroelectronics. https://www.st.com/en/development-tools/stm32cubemx.html
-- STMicroelectronics. (s. f.). STM32CubeProgrammer software description. STMicroelectronics. https://www.st.com/resource/en/user_manual/dm00403500-stm32cubeprogrammer-software-description-stmicroelectronics.pdf
-- STMicroelectronics. (s. f.). STM32F030x4/x6/x8/xC Datasheet. STMicroelectronics. https://www.st.com/resource/en/datasheet/stm32f030f4.pdf
-- YouTube. (s. f.). Video de inspiración para el proyecto de guante/controlador gestual. YouTube. https://www.youtube.com/watch?v=LUPaY_fYAWU
-
+- Advanced Monolithic Systems. (s. f.). *AMS1117 Voltage Regulator Datasheet*. Digi-Key. https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5011/AMS1117.pdf
+- 3PEAK. (s. f.). *TPB4056A Linear Li-Ion Battery Charger Datasheet*. 3PEAK. https://static.3peak.com/res/doc/ds/Datasheet_TPB4056A.pdf
+- Espressif Systems. (s. f.). *ESP32-C6 Series Datasheet*. Espressif. https://documentation.espressif.com/esp32-c6_datasheet_en.pdf
+- MANUS. (s. f.). *MANUS products: Professional glove-based motion capture systems*. MANUS. https://www.manus-meta.com/products/overview
+- Mariana-zy. (2026). *fp-sns-allmems1: Prototipo con SensorTile y firmware ALLMEMS1* [Repositorio de GitHub]. GitHub. https://github.com/Mariana-zy/fp-sns-allmems1
+- Mariana-zy. (2026). *GestureMouse-STM32: Diseño de PCB y documentación de un guante controlador gestual* [Repositorio de GitHub]. GitHub. https://github.com/Mariana-zy/GestureMouse-STM32
+- onsemi. (s. f.). *CAT6219 500 mA CMOS Low Dropout Regulator Datasheet*. LCSC. https://www.lcsc.com/datasheet/C255621.pdf
+- SHOU HAN. (s. f.). *USB TYPE-C-3.1-16PIN Datasheet*. LCSC. https://www.lcsc.com/datasheet/C7507405.pdf
+- STMicroelectronics. (2019). *UM2101: Getting started with the STEVAL-STLKT01V1 SensorTile integrated development platform*. STMicroelectronics. https://www.st.com/resource/en/user_manual/um2101-getting-started-with-the-stevalstlkt01v1-sensortile-integrated-development-platform-stmicroelectronics.pdf
+- STMicroelectronics. (s. f.). *FP-SNS-ALLMEMS1: STM32Cube function pack for IoT node with Bluetooth Low Energy connectivity, digital microphone, environmental, and motion sensors*. STMicroelectronics. https://www.st.com/en/embedded-software/fp-sns-allmems1.html
+- STMicroelectronics. (s. f.). *LSM6DS3TR-C iNEMO Inertial Module Datasheet*. LCSC. https://www.lcsc.com/datasheet/C967633.pdf
+- STMicroelectronics. (s. f.). *STBLESensor: BLE sensor application for Android and iOS*. STMicroelectronics. https://www.st.com/en/embedded-software/stblesensor.html
+- STMicroelectronics. (s. f.). *STM32CubeIDE*. STMicroelectronics. https://www.st.com/en/development-tools/stm32cubeide.html
+- STMicroelectronics. (s. f.). *STM32CubeMX*. STMicroelectronics. https://www.st.com/en/development-tools/stm32cubemx.html
+- STMicroelectronics. (s. f.). *STM32CubeProgrammer software description*. STMicroelectronics. https://www.st.com/resource/en/user_manual/dm00403500-stm32cubeprogrammer-software-description-stmicroelectronics.pdf
+- STMicroelectronics. (s. f.). *STM32F030x4/x6/x8/xC Datasheet*. STMicroelectronics. https://www.st.com/resource/en/datasheet/stm32f030f4.pdf
+- YouTube. (s. f.). *Video de inspiración para el proyecto de guante/controlador gestual*. YouTube. https://www.youtube.com/watch?v=LUPaY_fYAWU
