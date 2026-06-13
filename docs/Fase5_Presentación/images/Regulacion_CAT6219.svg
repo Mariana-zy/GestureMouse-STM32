@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1250" height="760" viewBox="0 0 1250 760">
+  <defs>
+    <style>
+      .wire{stroke:#0033cc;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .sym{stroke:#0033cc;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .box{fill:#fff8b8;stroke:#8b0000;stroke-width:3}
+      .txt{font-family:"Times New Roman",serif;font-size:42px;fill:#001070;font-weight:bold}
+      .pin{font-family:"Times New Roman",serif;font-size:25px;fill:#111}
+      .lbl{font-family:"Times New Roman",serif;font-size:24px;fill:#990000}
+      .small{font-family:"Times New Roman",serif;font-size:20px;fill:#001070}
+      .note{font-family:Arial,sans-serif;font-size:18px;fill:#334155}
+    </style>
+  </defs>
+
+  <rect x="15" y="15" width="1220" height="730" fill="#fff" stroke="#111" stroke-width="3"/>
+  <text x="330" y="72" class="txt">3. REGULATION 3.3 V - CAT6219</text>
+
+  <!-- BAT input -->
+  <text x="70" y="145" class="lbl">BAT+</text>
+  <line x1="105" y1="155" x2="105" y2="245" class="wire"/>
+  <line x1="105" y1="245" x2="410" y2="245" class="wire"/>
+  <circle cx="105" cy="245" r="6" fill="#0033cc"/>
+
+  <!-- input caps -->
+  <line x1="180" y1="245" x2="180" y2="330" class="wire"/>
+  <line x1="150" y1="330" x2="210" y2="330" class="sym"/>
+  <line x1="150" y1="350" x2="210" y2="350" class="sym"/>
+  <line x1="180" y1="350" x2="180" y2="560" class="wire"/>
+  <text x="215" y="344" class="lbl">C?</text>
+  <text x="215" y="374" class="small">10uF</text>
+
+  <line x1="305" y1="245" x2="305" y2="330" class="wire"/>
+  <line x1="275" y1="330" x2="335" y2="330" class="sym"/>
+  <line x1="275" y1="350" x2="335" y2="350" class="sym"/>
+  <line x1="305" y1="350" x2="305" y2="560" class="wire"/>
+  <text x="340" y="344" class="lbl">C?</text>
+  <text x="340" y="374" class="small">0.1uF</text>
+
+  <!-- CAT6219 symbol -->
+  <rect x="500" y="180" width="330" height="250" class="box"/>
+  <text x="565" y="165" class="lbl">U?</text>
+  <text x="555" y="220" class="pin">VIN</text>
+  <text x="555" y="270" class="pin">EN</text>
+  <text x="555" y="340" class="pin">BYP</text>
+  <text x="615" y="410" class="pin">GND</text>
+  <text x="720" y="220" class="pin">VOUT</text>
+  <text x="595" y="465" class="small">CAT6219-330TDGT3</text>
+
+  <!-- pin numbers -->
+  <text x="485" y="220" class="pin">5</text>
+  <text x="485" y="270" class="pin">3</text>
+  <text x="485" y="340" class="pin">4</text>
+  <text x="645" y="445" class="pin">2</text>
+  <text x="835" y="220" class="pin">1</text>
+
+  <!-- connections to IC -->
+  <line x1="410" y1="245" x2="500" y2="220" class="wire"/>
+  <line x1="410" y1="245" x2="500" y2="270" class="wire"/>
+  <circle cx="410" cy="245" r="6" fill="#0033cc"/>
+  <text x="390" y="200" class="note">EN unido a BAT+ para que el regulador quede siempre activo</text>
+
+  <!-- BYP cap -->
+  <line x1="500" y1="340" x2="410" y2="340" class="wire"/>
+  <line x1="410" y1="340" x2="410" y2="415" class="wire"/>
+  <line x1="380" y1="415" x2="440" y2="415" class="sym"/>
+  <line x1="380" y1="435" x2="440" y2="435" class="sym"/>
+  <line x1="410" y1="435" x2="410" y2="560" class="wire"/>
+  <text x="435" y="428" class="lbl">C?</text>
+  <text x="435" y="458" class="small">10nF</text>
+
+  <!-- GND -->
+  <line x1="665" y1="430" x2="665" y2="560" class="wire"/>
+  <line x1="105" y1="560" x2="1040" y2="560" class="wire"/>
+  <line x1="625" y1="560" x2="705" y2="560" class="wire"/>
+  <line x1="640" y1="575" x2="690" y2="575" class="wire"/>
+  <line x1="655" y1="590" x2="675" y2="590" class="wire"/>
+  <text x="630" y="628" class="lbl">GND</text>
+
+  <!-- output net -->
+  <line x1="830" y1="220" x2="1110" y2="220" class="wire"/>
+  <text x="1045" y="195" class="lbl">3.3V_SYS</text>
+  <text x="1015" y="255" class="small">a STM32 + IMUs + ESP32-C6</text>
+
+  <!-- output caps -->
+  <line x1="925" y1="220" x2="925" y2="330" class="wire"/>
+  <line x1="895" y1="330" x2="955" y2="330" class="sym"/>
+  <line x1="895" y1="350" x2="955" y2="350" class="sym"/>
+  <line x1="925" y1="350" x2="925" y2="560" class="wire"/>
+  <text x="960" y="344" class="lbl">C?</text>
+  <text x="960" y="374" class="small">10uF</text>
+
+  <line x1="1040" y1="220" x2="1040" y2="330" class="wire"/>
+  <line x1="1010" y1="330" x2="1070" y2="330" class="sym"/>
+  <line x1="1010" y1="350" x2="1070" y2="350" class="sym"/>
+  <line x1="1040" y1="350" x2="1040" y2="560" class="wire"/>
+  <text x="1075" y="344" class="lbl">C?</text>
+  <text x="1075" y="374" class="small">0.1uF</text>
+
+  <!-- notes -->
+  <text x="95" y="680" class="note">Recomendacion: colocar C_IN cerca de VIN/GND y C_OUT cerca de VOUT/GND.</text>
+  <text x="95" y="710" class="note">Para ESP32-C6, usar pistas de 3.3 V anchas y un capacitor adicional cerca del modulo ESP si va en la misma PCB.</text>
+</svg>

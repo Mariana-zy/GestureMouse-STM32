@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1350" height="850" viewBox="0 0 1350 850">
+  <defs>
+    <style>
+      .board{fill:#101010;stroke:#eab308;stroke-width:4;rx:12}
+      .comp{fill:#202020;stroke:#facc15;stroke-width:4}
+      .pad{fill:#d93030;stroke:#ffb4b4;stroke-width:2}
+      .th{fill:#7dd3fc;stroke:#d946ef;stroke-width:4}
+      .silk{font-family:Arial,sans-serif;font-size:24px;fill:#facc15;font-weight:bold}
+      .net{font-family:Arial,sans-serif;font-size:18px;fill:#f8fafc;font-weight:bold}
+      .small{font-family:Arial,sans-serif;font-size:16px;fill:#cbd5e1}
+      .routeP{stroke:#ef4444;stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .routeG{stroke:#22c55e;stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .routeS{stroke:#38bdf8;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .routeMosi{stroke:#a78bfa;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .routeMiso{stroke:#fb923c;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .routeCs{stroke:#f472b6;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .routeTp{stroke:#facc15;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:8 6}
+      .arrow{marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,8 L11,4 z" fill="#f8fafc"/>
+    </marker>
+  </defs>
+
+  <rect x="20" y="20" width="1310" height="810" fill="#fff" stroke="#111" stroke-width="3"/>
+  <text x="310" y="70" style="font-family:'Times New Roman',serif;font-size:42px;fill:#001070;font-weight:bold">PCB dedo - conexiones hacia MCU</text>
+
+  <rect x="100" y="120" width="1150" height="630" class="board"/>
+  <text x="125" y="155" class="silk">Borde de PCB dedo</text>
+
+  <!-- H2 connector left -->
+  <rect x="150" y="190" width="145" height="430" class="comp"/>
+  <text x="182" y="180" class="silk">H2</text>
+  <text x="132" y="645" class="small">Conector hacia PCB principal / MCU</text>
+
+  <circle cx="222" cy="245" r="27" class="th"/><text x="212" y="252" class="net">1</text><text x="123" y="252" class="net">3.3V</text>
+  <circle cx="222" cy="315" r="27" class="th"/><text x="212" y="322" class="net">2</text><text x="140" y="322" class="net">GND</text>
+  <circle cx="222" cy="385" r="27" class="th"/><text x="212" y="392" class="net">3</text><text x="145" y="392" class="net">SCK</text>
+  <circle cx="222" cy="455" r="27" class="th"/><text x="212" y="462" class="net">4</text><text x="130" y="462" class="net">MOSI</text>
+  <circle cx="222" cy="525" r="27" class="th"/><text x="212" y="532" class="net">5</text><text x="130" y="532" class="net">MISO</text>
+  <circle cx="222" cy="595" r="27" class="th"/><text x="212" y="602" class="net">6</text><text x="130" y="602" class="net">CS</text>
+
+  <!-- IMU center -->
+  <rect x="555" y="300" width="250" height="210" class="comp"/>
+  <text x="635" y="290" class="silk">U1 IMU</text>
+  <rect x="545" y="330" width="38" height="42" class="pad"/><text x="520" y="357" class="net">SDO</text>
+  <rect x="545" y="390" width="38" height="42" class="pad"/><text x="518" y="418" class="net">SDx</text>
+  <rect x="545" y="450" width="38" height="42" class="pad"/><text x="518" y="478" class="net">SCx</text>
+
+  <rect x="777" y="330" width="38" height="42" class="pad"/><text x="823" y="357" class="net">SDA</text>
+  <rect x="777" y="390" width="38" height="42" class="pad"/><text x="823" y="418" class="net">SCL</text>
+  <rect x="777" y="450" width="38" height="42" class="pad"/><text x="823" y="478" class="net">CS</text>
+
+  <rect x="610" y="285" width="42" height="38" class="pad"/><text x="604" y="272" class="net">VDDIO</text>
+  <rect x="690" y="285" width="42" height="38" class="pad"/><text x="696" y="272" class="net">VDD</text>
+  <rect x="610" y="500" width="42" height="38" class="pad"/><text x="603" y="562" class="net">GND</text>
+  <rect x="690" y="500" width="42" height="38" class="pad"/><text x="686" y="562" class="net">GND</text>
+  <rect x="555" y="260" width="35" height="35" class="pad"/><text x="510" y="285" class="net">INT1</text>
+  <rect x="770" y="260" width="35" height="35" class="pad"/><text x="812" y="285" class="net">INT2</text>
+
+  <!-- capacitors near power -->
+  <rect x="440" y="210" width="62" height="45" class="comp"/><text x="445" y="200" class="silk">C1</text><text x="444" y="282" class="small">0.1uF</text>
+  <rect x="535" y="210" width="62" height="45" class="comp"/><text x="540" y="200" class="silk">C2</text><text x="546" y="282" class="small">1uF</text>
+
+  <!-- TP right -->
+  <rect x="1000" y="300" width="145" height="170" class="comp"/>
+  <text x="1033" y="290" class="silk">H1</text>
+  <text x="1005" y="497" class="small">Test points locales</text>
+  <circle cx="1072" cy="355" r="28" class="th"/><text x="1063" y="362" class="net">1</text><text x="1112" y="362" class="net">INT1</text>
+  <circle cx="1072" cy="425" r="28" class="th"/><text x="1063" y="432" class="net">2</text><text x="1112" y="432" class="net">INT2</text>
+
+  <!-- Routes from connector to IMU -->
+  <path d="M249 245 H450 V232 H610" class="routeP"/><path d="M450 232 H535" class="routeP"/><path d="M631 285 V245 H710 V285" class="routeP"/>
+  <path d="M249 315 H400 V520 H610" class="routeG"/><path d="M400 520 H690" class="routeG"/><path d="M470 255 V520" class="routeG"/><path d="M565 255 V520" class="routeG"/>
+  <path d="M249 385 H505 V411 H777" class="routeS"/>
+  <path d="M249 455 H490 V351 H777" class="routeMosi"/>
+  <path d="M249 525 H545 V351" class="routeMiso"/>
+  <path d="M249 595 H875 V471 H815" class="routeCs"/>
+
+  <!-- SDx/SCx to GND local -->
+  <path d="M545 411 H400" class="routeG"/>
+  <path d="M545 471 H400" class="routeG"/>
+
+  <!-- TP routes -->
+  <path d="M590 278 H930 V355 H1044" class="routeTp"/>
+  <path d="M805 278 H950 V425 H1044" class="routeTp"/>
+
+  <!-- Legend -->
+  <rect x="125" y="675" width="980" height="55" fill="#18181b" stroke="#64748b" stroke-width="2"/>
+  <text x="145" y="710" class="small">Rojo: 3.3V | Verde: GND | Azul: SCK | Morado: MOSI | Naranja: MISO | Rosa: CS | Amarillo punteado: INT1/INT2 test points</text>
+
+  <text x="760" y="650" class="small">Las 6 senales de H2 van hacia la PCB principal y de ahi al STM32.</text>
+  <text x="760" y="675" class="small">INT1 e INT2 no van al MCU en esta version; quedan como test points locales.</text>
+</svg>
