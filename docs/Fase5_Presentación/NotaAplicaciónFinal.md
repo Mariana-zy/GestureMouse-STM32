@@ -39,15 +39,13 @@ El sistema está pensado para funcionar con batería LiPo, cargarse mediante USB
 
 GestureMouse STM32 está orientado a aplicaciones donde el usuario necesita controlar un computador o dispositivo sin usar un mouse físico tradicional.
 
-Ejemplos de uso previstos:
+Ejemplos de gestos previstos:
 
 - Movimiento de mano para desplazar el cursor.
 - Movimiento del dedo para generar clic.
 - Gestos sostenidos para arrastre.
 - Inclinaciones o movimientos específicos para scroll.
-- Uso como interfaz de accesibilidad.
-- Control de presentaciones o sistemas remotos.
-
+  
 Aunque la implementación completa de gestos depende del firmware final, la arquitectura propuesta deja preparada la base de hardware necesaria para desarrollar estas funciones.
 
 ---
@@ -90,7 +88,7 @@ ESP32-C6
 Computador
 ```
 
-Documento relacionado:
+Para ver la arquitectura completa:
 
 - [Diagramas de bloques de hardware y firmware](<../Fase3_Diagramas/DiagramasBloques.pdf>)
 
@@ -112,6 +110,7 @@ Decisión final:
 - **ESP32-C6:** comunicación inalámbrica Bluetooth Low Energy y posible perfil HID tipo mouse.
 
 ![Comparación entre STM32F030 y ESP32-C6](images/ComparacionMCUs.png)
+
 ---
 
 ## Principio De Funcionamiento De La IMU
@@ -207,8 +206,6 @@ Documentos relacionados:
 
 - [Datasheet AMS1117](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5011/AMS1117.pdf)
 - [Datasheet CAT6219](https://www.lcsc.com/datasheet/C255621.pdf)
-
-Imagen sugerida:
 
 ![Comparación de dropout entre AMS1117 y CAT6219](images/DecisionesDiseno.png)
 
@@ -324,7 +321,7 @@ USB-C 5 V
                            +-- ESP32-C6
 ```
 
-Documento relacionado:
+Para ver el Árbol completo
 
 - [Árbol de potencia](<../Fase3_Diagramas/ÁrbolPotencia.pdf>)
 
@@ -388,12 +385,6 @@ La PCB principal integra:
 - Header hacia la IMU externa del dedo.
 - LEDs de estado.
 - Botones de usuario y reset.
-
-Documento relacionado:
-
-- [Diseño de PCB](<../Fase4_PCB's/PCB's.pdf>)
-
-Imagen sugerida:
 
 ![Vista de la PCB principal](images/PCBPrincipal.png)
 
@@ -469,8 +460,7 @@ Interpretación de gestos
   v
 Envío de comandos por UART
 ```
-
-Documento relacionado:
+Más documentación del firmware en:
 
 - [Diagramas de bloques de hardware y firmware](<../Fase3_Diagramas/DiagramasBloques.pdf>)
 
