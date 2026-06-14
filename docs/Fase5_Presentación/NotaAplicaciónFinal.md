@@ -211,7 +211,7 @@ Documentos relacionados:
 
 ---
 
-### Alimentación Del STM32
+### Alimentación del STM32
 
 Este bloque incluye la conexión de los pines VDD, VDDA, VSS y VSSA del microcontrolador, además de capacitores de desacople cercanos a los pines de alimentación.
 
@@ -259,7 +259,7 @@ Documento relacionado:
 
 ---
 
-### Comunicación Con ESP32-C6
+### Comunicación con ESP32-C6
 
 El ESP32-C6 se conecta al STM32 mediante UART. Su función principal es recibir comandos desde el STM32 y transmitirlos al computador mediante Bluetooth Low Energy.
 
@@ -271,7 +271,7 @@ Documento relacionado:
 
 ---
 
-### Programación Y Depuración
+### Programación y depuración
 
 La programación del STM32 se realiza mediante SWD usando las señales:
 
@@ -302,7 +302,7 @@ Este método permite cargar firmware y depurar el microcontrolador sin depender 
 
 ---
 
-## Árbol De Potencia Y Consumo
+## Árbol de Potencia y Consumo
 
 El sistema recibe energía desde USB-C para cargar la batería LiPo. La batería alimenta el regulador de 3.3 V, y desde esta línea se alimentan el STM32, las IMU y el ESP32-C6.
 
@@ -365,7 +365,7 @@ Estos valores son ideales y deben validarse experimentalmente, ya que la autonom
 
 ---
 
-## Diseño De PCB
+## Diseño de PCB
 
 El proyecto contempla una PCB principal y una PCB secundaria para la IMU del dedo.
 
@@ -393,7 +393,7 @@ La PCB principal integra:
 
 ---
 
-### PCB Secundaria Para IMU Del Dedo
+### PCB Secundaria para IMU del Dedo
 
 La PCB secundaria contiene la IMU del dedo, sus capacitores de desacople y el conector hacia la PCB principal. Esta separación permite medir el movimiento real del dedo y facilita la integración física en el guante.
 
@@ -410,7 +410,7 @@ La conexión entre la PCB principal y la PCB secundaria requiere:
 
 ---
 
-## Recomendaciones De Diseño PCB
+## Recomendaciones de Diseño PCB
 
 Para mejorar la confiabilidad del diseño se recomienda:
 
@@ -469,7 +469,7 @@ Más documentación del firmware en:
 
 ---
 
-## Procedimiento De Validación Recomendado
+## Procedimiento de Validación Recomendado
 
 La validación inicial debe realizarse en el siguiente orden:
 
@@ -521,7 +521,7 @@ El sistema puede utilizarse como base para:
 
 ---
 
-## Limitaciones Y Consideraciones
+## Limitaciones y Consideraciones
 
 El diseño propuesto aún requiere fabricación, ensamble y validación experimental. Algunas consideraciones importantes son:
 
