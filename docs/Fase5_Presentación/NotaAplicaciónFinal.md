@@ -92,7 +92,7 @@ Para ver la arquitectura completa:
 
 - [Diagramas de bloques de hardware y firmware](<../Fase3_Diagramas/DiagramasBloques.pdf>)
 
-![Arquitectura general del sistema](images/SeparacionFunciones.png)
+![Arquitectura general del sistema](images/SeparaciónFunciones.png)
 
 ---
 
@@ -109,7 +109,7 @@ Decisión final:
 - **STM32F030:** lectura de sensores, procesamiento inicial, control de GPIO, LEDs, botones y programación SWD.
 - **ESP32-C6:** comunicación inalámbrica Bluetooth Low Energy y posible perfil HID tipo mouse.
 
-![Comparación entre STM32F030 y ESP32-C6](images/ComparacionMCUs.png)
+![Comparación entre STM32F030 y ESP32-C6](images/ComparaciónMCUs.png)
 
 ---
 
