@@ -374,17 +374,20 @@ El proyecto contempla una PCB principal y una PCB secundaria para la IMU del ded
 ### PCB Principal
 
 La PCB principal integra:
-
-- Entrada USB-C.
-- Cargador de batería LiPo.
-- Regulador de 3.3 V.
-- STM32F030C8T6.
-- IMU de la mano.
-- Headers de programación.
-- Header UART hacia ESP32-C6.
-- Header hacia la IMU externa del dedo.
-- LEDs de estado.
-- Botones de usuario y reset.
+1. Entrada USB C
+2. Cargador de batería 
+3. LED’s de estado de carga
+4. Conector de batería LiPo
+5. Regulador 3.3V 
+6. MCU STM32F030C8T6 
+7. Botón de usuario
+8. Botón de reset
+9. LED’s de estado del sistema
+10. IMU del torso de la mano
+11. Header para IMU externa del dedo
+12. Header de programación SW
+13. Header para comunicación con ESP32-C6
+14. Header Test Points
 
 ![Vista de la PCB principal](images/PCBPrincipal.png)
 
