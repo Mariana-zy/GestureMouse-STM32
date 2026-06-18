@@ -527,7 +527,6 @@ El diseño propuesto aún requiere fabricación, ensamble y validación experime
 
 - La comunicación BLE HID debe integrarse con el ESP32-C6.
 - El reconocimiento de gestos requiere desarrollo de firmware adicional.
-- La IMU en encapsulado LGA puede ser difícil de soldar manualmente.
 - La autonomía real de la batería debe medirse experimentalmente.
 - Se recomienda utilizar una batería LiPo con protección.
 - El cargador de batería no reemplaza un sistema completo de power-path.
@@ -540,8 +539,6 @@ El diseño propuesto aún requiere fabricación, ensamble y validación experime
 
 Como continuación del proyecto se propone:
 
-- Fabricar la PCB principal y la PCB de dedo.
-- Ensamblar componentes.
 - Validar alimentación y consumo real.
 - Programar firmware base en STM32.
 - Leer correctamente las IMU mediante SPI.
