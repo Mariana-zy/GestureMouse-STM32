@@ -94,7 +94,7 @@ ESP32-C6
 Computador
 ```
 
-![Arquitectura general del sistema](docs/Fase5_Presentación/images/PCBDedo.png)
+![Arquitectura general del sistema](docs/Fase5_Presentación/images/ComparaciónMCUs.png)
 
 Documento relacionado:
 
