@@ -94,7 +94,7 @@ ESP32-C6
 Computador
 ```
 
-![Arquitectura general del sistema](docs/Fase5_Presentación/images/ComparaciónMCUs.png)
+![Arquitectura general del sistema](docs/Fase5_Presentación/images/SeparaciónFunciones.png)
 
 Documento relacionado:
 
@@ -108,7 +108,7 @@ Se decidió utilizar el **STM32F030C8T6** como microcontrolador principal porque
 
 El **ESP32-C6** se mantiene dentro del sistema, pero como módulo dedicado a la comunicación Bluetooth Low Energy. De esta forma, el STM32F030 se encarga del control y procesamiento local, mientras que el ESP32-C6 recibe comandos por UART y los transmite al computador como eventos tipo mouse.
 
-![Comparación entre STM32F030 y ESP32-C6](docs/images/ComparacionMCUs.png)
+![Comparación entre STM32F030 y ESP32-C6](docs/Fase5_Presentación/images/ComparaciónMCUs.png)
 
 La decisión final divide el sistema en dos funciones principales:
 
@@ -174,7 +174,7 @@ El AMS1117 puede requerir alrededor de 4.4 V para garantizar una salida estable 
 
 Por esta razón se seleccionó el **CAT6219**, un LDO de bajo dropout. Este regulador permite mantener una salida cercana a 3.3 V durante una mayor parte de la descarga de la batería.
 
-![Decisiones de regulación](docs/images/DecisionesDiseno.png)
+![Decisiones de regulación](docs/Fase5_Presentación/images/DecisionesDiseno.png)
 
 Documentos relacionados:
 
@@ -343,7 +343,7 @@ Documento relacionado:
 
 - [Diseño de PCB](<docs/Fase4_PCB's/PCB's.pdf>)
 
-![PCB principal](docs/images/PCBPrincipal.png)
+![PCB principal](docs/Fase5_Presentación/images/PCBPrincipal.png)
 
 ### PCB Secundaria Para IMU Del Dedo
 
@@ -358,7 +358,7 @@ La conexión entre la PCB principal y la PCB secundaria requiere:
 - MISO.
 - CS de la IMU del dedo.
 
-![PCB secundaria IMU dedo](docs/images/PCBDedo.png)
+![PCB secundaria IMU dedo](docs/Fase5_Presentación/images/PCBDedo.png)
 
 ---
 
