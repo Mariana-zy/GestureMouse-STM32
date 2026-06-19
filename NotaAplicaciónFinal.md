@@ -504,7 +504,7 @@ Esta fase contiene las diapositivas utilizadas para presentar el proyecto, inclu
 
 La PCB principal del sistema GestureMouse STM32 fue ensamblada como primera versión física del hardware. Esta tarjeta integra los bloques necesarios para validar el funcionamiento del sistema: alimentación, carga de batería, regulación a 3.3 V, microcontrolador STM32F030, programación SWD, comunicación UART, LEDs, botones y conexión hacia la IMU externa del dedo.
 
-![PCB final soldada](images/PCBFinal.png)
+![PCB final soldada](docs/Fase5_Presentación/images/PCBFinal.png)
 
 Después del ensamble, la tarjeta debe validarse de forma progresiva. Primero se recomienda revisar continuidad y ausencia de cortos, luego medir las líneas de alimentación principales, especialmente USB_5V, BAT+ y 3.3 V. Una vez confirmada la alimentación, se puede continuar con la programación del STM32, la prueba de comunicación SPI con las IMU y la integración del ESP32-C6 para comunicación Bluetooth Low Energy.
 
