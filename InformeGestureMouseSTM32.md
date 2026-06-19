@@ -436,6 +436,16 @@ Esta fase contiene las diapositivas utilizadas para presentar el proyecto, inclu
 
 - [Diapositivas de presentación](<docs/Fase5_Presentación/Diapositivas.pdf>)
 
+### PCB Soldada
+
+Como resultado del proceso de diseño, se realizó el ensamble físico de la PCB principal del proyecto **GestureMouse STM32**. Esta etapa permitió pasar del diseño esquemático y de PCB a una primera versión tangible del hardware, lista para iniciar pruebas eléctricas y funcionales.
+
+La PCB soldada integra los bloques principales del sistema: entrada de alimentación USB-C, cargador de batería LiPo, regulador de 3.3 V, microcontrolador STM32F030, conectores de programación, comunicación UART, LEDs de estado, botones y conexión para la IMU externa del dedo.
+
+![PCB final soldada](docs/Fase5_Presentación/images/PCBFinal.png)
+
+La fabricación y soldadura de la tarjeta representan un avance importante del proyecto, ya que permiten continuar con la validación real del sistema. Las siguientes pruebas recomendadas son la verificación de continuidad, medición de la salida de 3.3 V, programación del STM32 mediante SWD, lectura de las IMU por SPI y posterior integración con el ESP32-C6 para comunicación Bluetooth Low Energy.
+
 ---
 
 ## Validacion esperada
@@ -470,6 +480,7 @@ Hasta esta etapa del proyecto se logró:
 - Diseñar la PCB principal.
 - Diseñar la PCB secundaria para la IMU del dedo.
 - Preparar la documentación técnica del proyecto.
+- 
 
 ## Aplicaciones posibles
 
@@ -494,8 +505,6 @@ El sistema puede utilizarse como base para:
 
 ## Trabajo futuro
 
-- Fabricar PCB principal y PCB de dedo.
-- Ensamblar componentes.
 - Validar alimentacion y consumo real.
 - Programar firmware base en STM32.
 - Leer IMU por SPI.
